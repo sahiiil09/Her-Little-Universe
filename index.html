@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Her Little Universe 💖</title>
+  <meta name="theme-color" content="#ffd6e0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- confetti + floating doodles (decor only) -->
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <div id="floaters" aria-hidden="true"></div>
+
+  <!-- ============ 1. ENVELOPE INTRO ============ -->
+  <div id="intro" class="intro">
+    <p class="intro-top">a little something for you</p>
+    <button id="openBtn" class="envelope" aria-label="Open your birthday surprise">
+      <span class="env-back"></span>
+      <span class="env-letter">For <b data-name>Suhu</b> 💌</span>
+      <span class="env-front"></span>
+      <span class="env-flap"></span>
+      <span class="env-seal">♥</span>
+    </button>
+    <p class="intro-hint">tap the envelope to open ✨</p>
+  </div>
+
+  <!-- ============ 2. MAIN SITE ============ -->
+  <main id="site" class="site hidden">
+
+    <div id="demoBanner" class="demo-banner hidden">
+      🧪 Demo mode: open <b>script.js</b> and paste your Supabase URL + key to go live.
+    </div>
+
+    <nav class="nav" aria-label="Sections">
+      <a href="#top">🏠 Home</a>
+      <a href="#letter">💌 Letter</a>
+      <a href="#photos">📸 Photos</a>
+      <a href="#voices">🎙️ Voice</a>
+      <a href="#notes">📝 Notes</a>
+    </nav>
+
+    <!-- Back / Home bar: visible on inner screens only -->
+    <div id="screenBar" class="screen-bar hidden">
+      <button type="button" id="backBtn" class="sb-btn" aria-label="Go back">← Back</button>
+      <span id="screenName" class="sb-title" aria-live="polite"></span>
+      <button type="button" id="homeBtn" class="sb-btn" aria-label="Go to home screen">🏠 Home</button>
+    </div>
+
+    <!-- HERO -->
+    <header id="top" class="hero screen active" data-screen="home" tabindex="-1">
+      <p class="hero-small">~ a little universe made just for ~</p>
+      <h1 class="hero-title">
+        <span class="line1">Happy Birthday,</span>
+        <span class="line2"><span data-name>Suhu</span> <span class="wiggle">🎂</span></span>
+      </h1>
+      <p class="hero-date">27 November</p>
+
+      <div class="countdown" id="countdown" aria-live="polite">
+        <div class="cd-box"><b id="cdDays">0</b><span>days</span></div>
+        <div class="cd-box"><b id="cdHours">0</b><span>hours</span></div>
+        <div class="cd-box"><b id="cdMins">0</b><span>mins</span></div>
+        <div class="cd-box"><b id="cdSecs">0</b><span>secs</span></div>
+      </div>
+      <p id="countMsg" class="count-msg"></p>
+
+      <a href="#letter" class="btn">Explore my universe ↓</a>
+
+      <nav class="home-menu" aria-label="Open a section">
+        <a href="#letter" class="menu-card">
+          <span class="tape tape-0"></span>
+          <span class="mc-icon" aria-hidden="true">💌</span>
+          <span class="mc-title">A letter for you</span>
+          <span class="mc-sub">words from my heart</span>
+        </a>
+        <a href="#photos" class="menu-card">
+          <span class="tape tape-1"></span>
+          <span class="mc-icon" aria-hidden="true">📸</span>
+          <span class="mc-title">Our little moments</span>
+          <span class="mc-sub">your photo wall</span>
+        </a>
+        <a href="#voices" class="menu-card">
+          <span class="tape tape-2"></span>
+          <span class="mc-icon" aria-hidden="true">🎙️</span>
+          <span class="mc-title">Voice notes</span>
+          <span class="mc-sub">press play, smile</span>
+        </a>
+        <a href="#notes" class="menu-card">
+          <span class="tape tape-0"></span>
+          <span class="mc-icon" aria-hidden="true">📝</span>
+          <span class="mc-title">Stick a note back</span>
+          <span class="mc-sub">leave me a note</span>
+        </a>
+      </nav>
+    </header>
+
+    <!-- LETTER -->
+    <section id="letter" class="section screen" data-screen="letter" tabindex="-1">
+      <h2 class="sec-title">A letter for you</h2>
+      <article class="letter">
+        <span class="tape tape-0"></span>
+        <h3 class="letter-to">Dear <span data-name>Suhu</span>,</h3>
+        <div id="letterBody"></div>
+        <p class="letter-sign" id="letterSign"></p>
+      </article>
+    </section>
+
+    <!-- PHOTOS -->
+    <section id="photos" class="section screen" data-screen="photos" tabindex="-1">
+      <h2 class="sec-title">Our little moments</h2>
+      <p class="sec-sub">tap a photo to see it big 📸</p>
+      <div id="photoWall" class="wall"></div>
+    </section>
+
+    <!-- VOICE MESSAGES -->
+    <section id="voices" class="section screen" data-screen="voices" tabindex="-1">
+      <h2 class="sec-title">Voice notes, just for you</h2>
+      <p class="sec-sub">press play and listen with a smile 🎧</p>
+      <div id="voiceList" class="voices"></div>
+    </section>
+
+    <!-- NOTES -->
+    <section id="notes" class="section screen" data-screen="notes" tabindex="-1">
+      <h2 class="sec-title">Stick a note back</h2>
+      <p class="sec-sub">write anything, it will stay on this wall 💗</p>
+      <form id="noteForm" class="note-form">
+        <label for="noteText" class="sr-only">Your note</label>
+        <textarea id="noteText" maxlength="300" rows="3" placeholder="Write a little note here..." required></textarea>
+        <div class="note-row">
+          <span id="noteCount" class="muted">0 / 300</span>
+          <button class="btn" type="submit">Stick it 📌</button>
+        </div>
+      </form>
+      <div id="noteBoard" class="board"></div>
+    </section>
+
+    <!-- SECRET ADMIN (open with  index.html#admin ) -->
+    <section id="admin" class="section admin hidden" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+      <div class="paper-card">
+        <button type="button" id="adminClose" class="dlg-x" aria-label="Close admin panel">✕</button>
+        <h2 class="sec-title" id="adminTitle">🔐 Secret corner</h2>
+        <p id="adminMsg" class="muted"></p>
+
+        <form id="loginForm">
+          <label>Email<input id="adEmail" type="email" autocomplete="username" required></label>
+          <label>Password<input id="adPass" type="password" autocomplete="current-password" required></label>
+          <button class="btn" type="submit">Login</button>
+        </form>
+
+        <form id="uploadForm" class="hidden">
+          <label>Where to upload?
+            <select id="upBucket">
+              <option value="photos">📸 Photos</option>
+              <option value="music">🎵 Music</option>
+              <option value="voices">🎙️ Voice messages</option>
+            </select>
+          </label>
+          <label>Caption / title (optional, only when uploading 1 file)
+            <input id="upCaption" type="text" maxlength="60" placeholder="e.g. Our first coffee date">
+          </label>
+          <label>Choose files
+            <input id="upFiles" type="file" accept="image/*" multiple required>
+          </label>
+          <div class="row">
+            <button class="btn" type="submit">Upload 💖</button>
+            <button class="btn ghost" type="button" id="logoutBtn">Logout</button>
+          </div>
+        </form>
+        <p id="upStatus" class="muted" role="status"></p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Made with 💖 by <span id="fromName"></span> · <a href="#admin" id="adminLink" aria-label="Admin">🔒</a></p>
+    </footer>
+  </main>
+
+  <!-- ============ 3. MUSIC PLAYER ============ -->
+  <div id="player" class="player hidden" role="region" aria-label="Music player">
+    <button id="prevBtn" class="pbtn" aria-label="Previous song">⏮</button>
+    <button id="playBtn" class="pbtn main" aria-label="Play or pause">▶</button>
+    <button id="nextBtn" class="pbtn" aria-label="Next song">⏭</button>
+    <div class="p-info">
+      <span id="songTitle" class="p-title">🎵</span>
+      <input id="seek" type="range" min="0" max="100" value="0" aria-label="Seek">
+    </div>
+    <button id="muteBtn" class="pbtn" aria-label="Mute or unmute">🔊</button>
+  </div>
+
+  <!-- ============ ADMIN TOOLS ============
+       UI only. Real protection = Supabase Row Level Security (see setup SQL). -->
+  <div id="adminBar" class="admin-bar hidden" role="toolbar" aria-label="Admin tools">
+    <span class="ab-badge">✨ Admin</span>
+    <button type="button" id="abUpload" class="ab-btn">➕ Add</button>
+    <button type="button" id="abSongs" class="ab-btn">🎵 Songs</button>
+    <button type="button" id="abEdit" class="ab-btn" aria-pressed="false">✏️ Edit mode</button>
+    <button type="button" id="abLogout" class="ab-btn">Logout</button>
+  </div>
+
+  <dialog id="confirmDlg" class="glass-dialog" aria-labelledby="cfTitle">
+    <div class="dlg-body">
+      <h3 id="cfTitle" class="dlg-title"></h3>
+      <p id="cfMsg"></p>
+      <p id="cfErr" class="dlg-err" role="alert"></p>
+      <div class="row dlg-actions">
+        <button type="button" id="cfCancel" class="btn ghost">Cancel</button>
+        <button type="button" id="cfOk" class="btn danger">Delete</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="editDlg" class="glass-dialog" aria-labelledby="editTitle">
+    <form id="editForm" class="dlg-body">
+      <h3 id="editTitle" class="dlg-title"></h3>
+      <p id="editLabel" class="muted"></p>
+      <input id="editInput" type="text" aria-labelledby="editLabel" autocomplete="off">
+      <textarea id="editArea" rows="4" aria-labelledby="editLabel" class="hidden"></textarea>
+      <p id="editErr" class="dlg-err" role="alert"></p>
+      <div class="row dlg-actions">
+        <button type="button" id="editCancel" class="btn ghost">Cancel</button>
+        <button type="submit" class="btn">Save 💾</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="songsDlg" class="glass-dialog" aria-labelledby="songsTitle">
+    <div class="dlg-body">
+      <h3 id="songsTitle" class="dlg-title">🎵 Playlist</h3>
+      <div id="songsList" class="songs-list"></div>
+      <div class="row dlg-actions">
+        <button type="button" id="songsClose" class="btn ghost">Close</button>
+        <button type="button" id="songsAdd" class="btn">➕ Add songs</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+
+  <!-- ============ 4. LIGHTBOX ============ -->
+  <div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button id="lbClose" class="lb-close" aria-label="Close">✕</button>
+    <figure class="lb-fig">
+      <div id="lbStage" class="lb-stage"></div>
+      <figcaption id="lbCap"></figcaption>
+    </figure>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
