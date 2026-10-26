@@ -32,7 +32,8 @@ LETTER: [
     "Aur haan, Suhu… aaj bas tera birthday nahi hai. Aaj woh din hai jis din meri favourite person is duniya mein aayi thi.",
 
     "Chalo, abhi toh hamari kahani ka ek chhota sa hissa hai. Aage aur bhi memories banani hain, aur bhi hasi-mazaak karna hai, aur bahut saari kahaniyan saath likhni hain. 💖"
-],
+]
+};
 
 /* ---------- tiny helpers ---------- */
 const $ = (sel, root = document) => root.querySelector(sel);
