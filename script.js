@@ -16,13 +16,23 @@ const CONFIG = {
   BIRTH_DAY: 27,
 
   // Your letter: each line becomes a paragraph. Write from the heart!
-  LETTER: [
-    "Aaj ka din sirf tumhare liye hai, because you make my ordinary days feel special.",
-    "Teri smile meri favourite cheez hai, aur teri awaaz meri favourite song.",
-    "This little universe is my way of saying thank you for being you. Hamesha aise hi hasti raho.",
-    "Happy Birthday, my love. Chalo, aage ki saari kahaniyan saath likhte hain. 💖"
-  ]
-};
+LETTER: [
+    "Aaj ka din sirf tumhara hai, because the world became a little more beautiful the day you were born. And somewhere in this big world, I got lucky enough to have you in my life. 💗",
+
+    "Teri smile meri favourite cheez hai, aur teri awaaz meri favourite song. Tujhse baat karna, teri chhoti-chhoti baatein sunna, aur tere saath waqt bitana — ye sab mere liye bahut special hai.",
+
+    "Maybe I can't always find the perfect words to explain what you mean to me, but I hope you can feel it in the little things I do. You don't have to be perfect, Suhu. You can be happy, sad, silly, quiet, or completely yourself — I want you to know that the real you is someone truly special to me. 🫶🏻",
+
+    "I made this little universe for you because I wanted to give you something that feels like us. Every photo, every little note, every word here carries a tiny piece of what I feel for you.",
+
+    "On your birthday, I wish you a heart full of happiness, dreams that come true, and countless reasons to smile. I hope life treats you gently and gives you beautiful moments to remember.",
+
+    "Happy Birthday, my love. 🎂💗",
+
+    "Aur haan, Suhu… aaj bas tera birthday nahi hai. Aaj woh din hai jis din meri favourite person is duniya mein aayi thi.",
+
+    "Chalo, abhi toh hamari kahani ka ek chhota sa hissa hai. Aage aur bhi memories banani hain, aur bhi hasi-mazaak karna hai, aur bahut saari kahaniyan saath likhni hain. 💖"
+],
 
 /* ---------- tiny helpers ---------- */
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -316,7 +326,7 @@ function tick() {
   $("#cdSecs").textContent = secs;
   $("#countMsg").textContent = days <= 7
     ? "Almost here... the best day is coming! 🥳"
-    : "until the most special day of the year 💗";
+    : "The world got more beautiful the day you were born. 💗";
 }
 tick();
 setInterval(tick, 1000);
