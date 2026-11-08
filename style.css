@@ -646,3 +646,64 @@ body.modal-open { overflow: hidden; }
   .sb-btn { padding: 7px 14px; font-size: 1.05rem; }
   .sb-title { font-size: 1.15rem; }
 }
+
+/* =========================================================
+   PASSWORD SCREEN (added; nothing above this line was changed)
+   While <body class="locked">, only the gate is displayed.
+   ========================================================= */
+body.locked > *:not(#gate) { display: none !important; }
+
+.gate {
+  position: fixed; inset: 0; z-index: 400;
+  display: grid; place-items: center; padding: 20px; overflow: auto;
+  background-color: var(--cream);
+  background-image:
+    radial-gradient(40vmax 40vmax at 8% 10%, rgba(255,143,171,.28), transparent 62%),
+    radial-gradient(36vmax 36vmax at 94% 28%, rgba(207,232,255,.6), transparent 62%),
+    radial-gradient(44vmax 44vmax at 28% 96%, rgba(217,198,234,.5), transparent 62%),
+    radial-gradient(rgba(255,143,171,.25) 1.6px, transparent 1.8px);
+  background-size: auto, auto, auto, 28px 28px;
+  transition: opacity .55s ease;
+}
+.gate.is-open { opacity: 0; pointer-events: none; }
+.gate.is-open .gate-card { transform: translateY(-14px) scale(.97); transition: transform .5s ease; }
+
+.gate-card {
+  position: relative; width: min(400px, 100%); padding: 44px 28px 28px; text-align: center;
+  border-radius: 26px;
+  background: var(--glass-fill);
+  -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 18px 46px rgba(90,62,75,.2), inset 0 1px 0 rgba(255,255,255,.95);
+  outline: 1.5px dashed rgba(255,143,171,.55); outline-offset: -8px;
+  animation: dlgIn .6s cubic-bezier(.2,.9,.3,1.2);
+}
+.gate-card.shake { animation: gateShake .45s; }
+.gate-icon { font-size: 3rem; line-height: 1; animation: gateBob 3s ease-in-out infinite; }
+.gate-title { margin: 10px 0 6px; font-family: var(--hand); font-weight: 400; font-size: 2.1rem; line-height: 1.1; }
+.gate-sub { margin: 0 0 22px; color: var(--ink-soft); font-size: 1.05rem; }
+.gate-field { position: relative; }
+.gate-field input {
+  padding: 14px 52px 14px 16px; text-align: center; font-size: 1.3rem; letter-spacing: .25em;
+  background: rgba(255,255,255,.8); border: 1.5px solid rgba(255,143,171,.55); border-radius: 14px;
+}
+.gate-eye {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px; border: 0; border-radius: 50%; cursor: pointer;
+  background: transparent; font-size: 1.15rem;
+}
+.gate-eye:hover { background: var(--pink-soft); }
+.gate-go { width: 100%; margin-top: 16px; font-size: 1.35rem; }
+.gate-msg { min-height: 1.5em; margin: 14px 0 0; color: #c0334f; font-size: 1.02rem; }
+
+.gate-doodle { position: fixed; font-size: 1.8rem; opacity: .7; pointer-events: none; animation: gateBob 4s ease-in-out infinite; }
+.gate-doodle.d1 { top: 12%; left: 10%; }
+.gate-doodle.d2 { top: 18%; right: 12%; animation-delay: -1s; }
+.gate-doodle.d3 { bottom: 14%; left: 14%; animation-delay: -2s; }
+.gate-doodle.d4 { bottom: 20%; right: 10%; animation-delay: -3s; }
+
+@keyframes gateShake {
+  20% { transform: translateX(-9px); } 40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); } 80% { transform: translateX(4px); }
+}
+@keyframes gateBob { 50% { transform: translateY(-6px) rotate(-4deg); } }
