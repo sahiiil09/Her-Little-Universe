@@ -1,3 +1,94 @@
+/* =========================================================
+   PASSWORD SCREEN (added at the very top)
+   - Your original code is untouched: it is simply wrapped in
+     startSite() below, and runs only AFTER the correct code.
+   - HONEST NOTE: this is a front-end "privacy curtain", not real
+     security. Anyone who reads the files can get around it.
+   ========================================================= */
+(function passwordScreen() {
+  "use strict";
+
+  const CODE_HASH = 4219995300484010;      // fingerprint of the access code (code itself is not stored here)
+  const SALT = "hlu-gate:";
+  const REMEMBER_IN_TAB = true;    // true: a refresh keeps her inside until the tab is closed
+  const KEY = "hlu_unlocked";
+
+  function hashCode(str, seed = 0) {
+    let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+    for (let i = 0, ch; i < str.length; i++) {
+      ch = str.charCodeAt(i);
+      h1 = Math.imul(h1 ^ ch, 2654435761);
+      h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+  }
+
+  let started = false;
+  function start() {
+    if (started) return;
+    started = true;
+    startSite(); // runs your original script, exactly once
+  }
+
+  const gate = document.getElementById("gate");
+  const form = document.getElementById("gateForm");
+  const input = document.getElementById("gateCode");
+  const msg = document.getElementById("gateMsg");
+  const eye = document.getElementById("gateEye");
+
+  function openSite() {
+    document.body.classList.remove("locked");
+    start();
+  }
+
+  let remembered = false;
+  try { remembered = REMEMBER_IN_TAB && sessionStorage.getItem(KEY) === "1"; } catch (e) { /* storage blocked */ }
+  if (remembered) {
+    if (gate) gate.remove();
+    openSite();
+    return;
+  }
+
+  function fail(text) {
+    msg.textContent = text;
+    input.value = "";
+    form.classList.remove("shake");
+    void form.offsetWidth; // restart the shake animation
+    form.classList.add("shake");
+    input.focus();
+  }
+
+  eye.addEventListener("click", () => {
+    const show = input.type === "password";
+    input.type = show ? "text" : "password";
+    eye.setAttribute("aria-pressed", String(show));
+    eye.setAttribute("aria-label", show ? "Hide code" : "Show code");
+    eye.textContent = show ? "🙈" : "👁️";
+    input.focus();
+  });
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const value = input.value.trim();
+    if (!value) { fail("Please enter the code."); return; }
+    if (hashCode(SALT + value) !== CODE_HASH) { fail("That is not the right code. Try again 💗"); return; }
+
+    try { if (REMEMBER_IN_TAB) sessionStorage.setItem(KEY, "1"); } catch (err) { /* ignore */ }
+    msg.textContent = "";
+    gate.classList.add("is-open");     // fade the password screen out
+    setTimeout(() => gate.remove(), 600);
+    openSite();                        // reveal + start your original website
+  });
+
+  input.focus();
+})();
+
+/* =========================================================
+   YOUR ORIGINAL script.js STARTS HERE (unchanged, wrapped in startSite)
+   ========================================================= */
+function startSite() {
 "use strict";
 
 /* =========================================================
@@ -1226,3 +1317,5 @@ $("#homeBtn").addEventListener("click", () => navigate("home"));
   }
   updateChrome();
 })();
+
+} // end of startSite(): your original script ends here
