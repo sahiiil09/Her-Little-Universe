@@ -10,7 +10,31 @@
   <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Patrick+Hand&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="locked">
+
+  <!-- ============ 0. PASSWORD SCREEN (added) ============ -->
+  <div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+    <span class="gate-doodle d1" aria-hidden="true">✨</span>
+    <span class="gate-doodle d2" aria-hidden="true">💖</span>
+    <span class="gate-doodle d3" aria-hidden="true">🌸</span>
+    <span class="gate-doodle d4" aria-hidden="true">⭐</span>
+    <form id="gateForm" class="gate-card" autocomplete="off" novalidate>
+      <span class="tape tape-0"></span>
+      <div class="gate-icon" aria-hidden="true">💌</div>
+      <h1 id="gateTitle" class="gate-title">Her Little Universe</h1>
+      <p class="gate-sub">This little world is private.<br>Enter the secret code to open it ✨</p>
+      <div class="gate-field">
+        <label for="gateCode" class="sr-only">Secret code</label>
+        <input id="gateCode" type="password" inputmode="numeric" autocomplete="off" autocapitalize="off"
+               spellcheck="false" maxlength="32" placeholder="• • • •" autofocus>
+        <button type="button" id="gateEye" class="gate-eye" aria-label="Show code" aria-pressed="false">👁️</button>
+      </div>
+      <button type="submit" class="btn gate-go">Unlock 💌</button>
+      <p id="gateMsg" class="gate-msg" role="alert" aria-live="assertive"></p>
+      <noscript><p class="gate-msg">Please turn on JavaScript to open this page.</p></noscript>
+    </form>
+  </div>
+
 
   <!-- confetti + floating doodles (decor only) -->
   <canvas id="confetti" aria-hidden="true"></canvas>
