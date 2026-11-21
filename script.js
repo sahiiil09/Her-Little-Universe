@@ -65,7 +65,7 @@
     input.type = show ? "text" : "password";
     eye.setAttribute("aria-pressed", String(show));
     eye.setAttribute("aria-label", show ? "Hide code" : "Show code");
-    eye.textContent = show ? "🙈" : "👁️";
+    eye.classList.toggle("is-on", show);
     input.focus();
   });
 
@@ -126,6 +126,93 @@ LETTER: [
 ]
 };
 
+/* =========================================================
+   EXTRA CONFIG (added): edit these freely, nothing else needs changing
+   ========================================================= */
+
+/* ---------- BIRTHDAY SURPRISE ----------
+   PERMANENT MEDIA: paste a public, DIRECT link to an image or a video
+   between the quotes on the next line, then save the file.
+     image example:  "https://example.com/our-photo.jpg"
+     video example:  "https://example.com/our-message.mp4"
+   Leave it as "" and the surprise still works (message + confetti).
+   (Nothing is uploaded anywhere by the website.) */
+const SURPRISE_MEDIA_URL = "";
+const SURPRISE_MEDIA_TYPE = "auto";   // "auto" | "image" | "video"  (auto guesses from the link)
+const SURPRISE_TITLE = "Happy Birthday, {name}!";
+const SURPRISE_MESSAGE = [
+  "Aaj ka din poori tarah tumhara hai. Ye chhota sa gift box maine sirf tumhare liye sajaya hai.",
+  "Tum meri life ki sabse khoobsurat surprise ho, Suhu. Hamesha hasti raho, hamesha aise hi chamakti raho.",
+  "Happy Birthday, my love."
+];
+
+/* ---------- OPEN WHEN LETTERS ----------
+   Each letter = one card. Change the words freely.
+   {name} becomes her nickname and {from} becomes your name.
+   icon options: smile, cloud-rain, heart, moon, shield, cake, mail-open, sparkles */
+const OPEN_WHEN_LETTERS = [
+  {
+    icon: "smile",
+    kicker: "Open when",
+    title: "you're happy",
+    message: [
+      "Tumhe khush dekhna meri favourite cheez hai, {name}. Aaj jo bhi wajah hai is khushi ki, mujhe usse pyaar ho gaya hai.",
+      "Is pal ko poori tarah jee lo. Hans lo, naach lo, photos kheench lo. Aur mujhe zaroor batana, kyunki tumhari khushi mere liye bhi celebration hai.",
+      "Bas itna yaad rakhna: tum jab muskurati ho, to meri duniya bhi halki aur roshan ho jaati hai."
+    ]
+  },
+  {
+    icon: "cloud-rain",
+    kicker: "Open when",
+    title: "you're sad",
+    message: [
+      "Aaj ka din bhaari hai na? Main wahan nahi hu to bhi, dil se tumhare bagal mein hi baitha hu.",
+      "Ek gehri saans lo. Thoda paani piyo. Rona ho to ro lo, kyunki rona kamzori nahi hota. Ye din bhi guzar jayega, hamesha guzarta hai.",
+      "Main har cheez theek nahi kar sakta, par tumhari baat sun sakta hu, jitni der tak tum chaho. Jab bhi mann kare, mujhe bata dena. Bina kisi wajah ke bhi."
+    ]
+  },
+  {
+    icon: "heart",
+    kicker: "Open when",
+    title: "you miss me",
+    message: [
+      "Agar tum mujhe miss kar rahi ho, to jaan lo ki main bhi tumhe miss kar raha hu, shayad tumse zyada.",
+      "Door hone se kuch kam nahi hota, bas intezaar thoda lamba ho jaata hai. Voice notes dobara sun lo, photos dekh lo, aur hamare purane pal yaad kar lo.",
+      "Aur jab hum milenge, ye saara intezaar bhool jayenge. Tab tak, mera ek bada sa hug tumhare liye."
+    ]
+  },
+  {
+    icon: "moon",
+    kicker: "Open",
+    title: "before you sleep",
+    message: [
+      "Aaj ka din chahe jaisa bhi gaya ho, ab usse yahin chhod do. Phone side mein rakho aur ek lambi saans lo.",
+      "Tumne aaj bahut kuch sambhala hoga, bina kisi ko bataye. Ab aaram ka waqt hai. Tum kaafi ho, jaisi ho waisi hi.",
+      "Good night, {name}. Meethe sapne dekhna, aur subah ek nayi muskurahat ke saath uthna."
+    ]
+  },
+  {
+    icon: "shield",
+    kicker: "Open when",
+    title: "you doubt yourself",
+    message: [
+      "Jab bhi tumhe khud par shak ho, ek baat yaad rakhna: tum utni hi kaabil ho jitna tum sochti ho, aur usse kahin zyada.",
+      "Galtiyan sabse hoti hain, aur har galti ke baad tum pehle se zyada strong banti ho. Mujhe tumhari perfection nahi chahiye, mujhe tum chahiye.",
+      "Main tumhare saath hu, har faisle mein, har darr mein, har naye kadam mein."
+    ]
+  },
+  {
+    icon: "cake",
+    kicker: "Open",
+    title: "on your birthday",
+    message: [
+      "Happy Birthday, {name}! Aaj ka din sirf tumhara hai.",
+      "Dil se dua hai ki ye saal tumhe wo sab de jo tumne chaha hai, aur wo bhi jo tumne kabhi maanga nahi. Khoob khushiyan, khoob sukoon, aur khoob saari hansi.",
+      "Mujhe tumse milna meri life ki sabse achhi baaton mein se ek lagta hai. Ek wish maango, aur use dil mein rakhna."
+    ]
+  }
+];
+
 /* ---------- tiny helpers ---------- */
 const $ = (sel, root = document) => root.querySelector(sel);
 
@@ -135,6 +222,25 @@ function el(tag, cls, text) {
   if (text !== undefined) node.textContent = text;
   return node;
 }
+
+/* ---------- icons (inline SVG sprite defined in index.html) ---------- */
+const SVG_NS = "http://www.w3.org/2000/svg";
+function iconEl(name, cls) {
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("class", "ico" + (cls ? " " + cls : ""));
+  svg.setAttribute("aria-hidden", "true");
+  const use = document.createElementNS(SVG_NS, "use");
+  use.setAttribute("href", "#i-" + name);
+  svg.append(use);
+  return svg;
+}
+/* put an icon (and optional label) inside a button */
+function setBtn(btn, name, text) {
+  btn.replaceChildren(iconEl(name));
+  if (text) btn.append(document.createTextNode(" " + text));
+}
+/* decorative animations switched off in Settings? */
+const noAnim = () => document.body.classList.contains("no-anim");
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -170,7 +276,9 @@ const markSeen = (kind, keys) => { seenKeys[kind] = new Set(keys); };
 function toast(message, type = "success") {
   const box = $("#toasts");
   const t = el("div", "toast " + type);
-  t.append(el("span", "toast-icon", type === "error" ? "⚠️" : "✨"), el("span", "", message));
+  const ic = el("span", "toast-icon");
+  ic.append(iconEl(type === "error" ? "alert" : "sparkles"));
+  t.append(ic, el("span", "", message));
   box.append(t);
   requestAnimationFrame(() => t.classList.add("show"));
   setTimeout(() => {
@@ -290,8 +398,10 @@ function editDialog({ title, label, value = "", max = 60, multiline = false, sav
 /* ✏️ / 🗑️ buttons shown on each item (admin + Edit mode only) */
 function adminActions(onEdit, onDelete, label) {
   const box = el("div", "item-actions");
-  const edit = el("button", "mini-btn", "✏️");
-  const del = el("button", "mini-btn danger", "🗑️");
+  const edit = el("button", "mini-btn");
+  const del = el("button", "mini-btn danger");
+  edit.append(iconEl("pencil"));
+  del.append(iconEl("trash"));
   edit.type = "button";
   del.type = "button";
   edit.setAttribute("aria-label", "Edit " + label);
@@ -322,10 +432,13 @@ document.title = `${CONFIG.NAME}'s Little Universe 💖`;
    ========================================================= */
 (function buildFloaters() {
   if (reduceMotion) return;
-  const icons = ["💖", "✨", "⭐", "🌸", "🦋", "🎀", "☁️", "💫"];
+  const icons = ["heart-fill", "sparkles", "star", "flower", "heart-fill", "sparkles", "star", "flower"];
+  const tints = ["#ff8fab", "#d9c6ea", "#ffe29a", "#ffc8a2", "#f06a8e", "#bfe5d6"];
   const box = $("#floaters");
   for (let i = 0; i < 16; i++) {
-    const s = el("span", "floater", icons[i % icons.length]);
+    const s = el("span", "floater");
+    s.append(iconEl(icons[i % icons.length]));
+    s.style.color = tints[i % tints.length];
     s.style.left = Math.random() * 100 + "%";
     s.style.fontSize = 16 + Math.random() * 20 + "px";
     s.style.animationDuration = 14 + Math.random() * 16 + "s";
@@ -344,7 +457,7 @@ resizeCanvas();
 addEventListener("resize", resizeCanvas);
 
 function burst(count = 150) {
-  if (reduceMotion) return;
+  if (reduceMotion || noAnim()) return;
   const colors = ["#ff8fab", "#ffe29a", "#bfe5d6", "#cfe8ff", "#d9c6ea", "#ffc8a2", "#f06a8e"];
   for (let i = 0; i < count; i++) {
     pieces.push({
@@ -436,7 +549,7 @@ let musicWasPlaying = false; // used to resume after a voice note
 function loadSong(i) {
   cur = (i + songs.length) % songs.length;
   music.src = songs[cur].url;
-  $("#songTitle").textContent = "🎵 " + songs[cur].title;
+  $("#songTitle").textContent = songs[cur].title;
   $("#seek").value = 0;
 }
 
@@ -468,13 +581,13 @@ $("#nextBtn").addEventListener("click", () => { loadSong(cur + 1); playMusic(); 
 $("#prevBtn").addEventListener("click", () => { loadSong(cur - 1); playMusic(); });
 $("#muteBtn").addEventListener("click", () => {
   music.muted = !music.muted;
-  $("#muteBtn").textContent = music.muted ? "🔇" : "🔊";
+  setBtn($("#muteBtn"), music.muted ? "volume-x" : "volume");
 });
 $("#seek").addEventListener("input", e => {
   if (music.duration) music.currentTime = (e.target.value / 100) * music.duration;
 });
-music.addEventListener("play",  () => ($("#playBtn").textContent = "⏸"));
-music.addEventListener("pause", () => ($("#playBtn").textContent = "▶"));
+music.addEventListener("play",  () => { setBtn($("#playBtn"), "pause"); $("#player").classList.add("is-playing"); });
+music.addEventListener("pause", () => { setBtn($("#playBtn"), "play"); $("#player").classList.remove("is-playing"); });
 music.addEventListener("timeupdate", () => {
   if (music.duration) $("#seek").value = (music.currentTime / music.duration) * 100;
 });
@@ -524,7 +637,9 @@ async function listFiles(bucket, regex) {
 
 function emptyState(icon, title, hint) {
   const box = el("div", "empty");
-  box.append(el("b", "", `${icon} ${title}`), el("span", "muted", hint));
+  const head = el("b", "");
+  head.append(iconEl(icon, "empty-ico"), document.createTextNode(" " + title));
+  box.append(head, el("span", "muted", hint));
   return box;
 }
 
@@ -532,7 +647,12 @@ function emptyState(icon, title, hint) {
    PHOTO WALL + LIGHTBOX
    ========================================================= */
 const TILTS = [-3, 2.5, -1.5, 3, -2.5, 1.5, -3.5, 2];
-const STICKERS = ["💖", "🌸", "⭐", "🎀", "🦋", "🍓", "☁️", "✨"];
+const STICKERS = ["heart-fill", "flower", "star", "sparkles", "heart-fill", "flower", "star", "sparkles"];
+function stickerEl(i) {
+  const st = el("span", "sticker st-" + (i % 4));
+  st.append(iconEl(STICKERS[i % STICKERS.length]));
+  return st;
+}
 const TAPES = ["tape-0", "tape-1", "tape-2"];
 
 const DEMO_PHOTOS = [
@@ -550,8 +670,8 @@ function renderPhotos(list) {
   wall.replaceChildren();
   if (!list.length) {
     markSeen("photos", []);
-    wall.append(emptyState("📸", "Photos are on the way",
-      isAdmin ? "Tap ➕ Add in the admin bar to upload the first photo." : "Something sweet is coming soon 💗"));
+    wall.append(emptyState("image", "Photos are on the way",
+      isAdmin ? "Tap Add in the admin bar to upload the first photo." : "Something sweet is coming soon 💗"));
     return;
   }
   const keys = [];
@@ -578,7 +698,7 @@ function renderPhotos(list) {
       el("span", "tape " + TAPES[i % TAPES.length]),
       frame,
       el("figcaption", "", p.title),
-      el("span", "sticker", STICKERS[i % STICKERS.length])
+      stickerEl(i)
     );
     if (isAdmin && !p.demo) {
       fig.append(adminActions(() => editMedia("photos", p), () => deleteMedia("photos", p, fig), p.title));
@@ -592,7 +712,9 @@ function renderPhotos(list) {
   markSeen("photos", keys);
 }
 
+let lbIndex = -1;
 function openLightbox(p) {
+  lbIndex = photosCache.indexOf(p);
   const stage = $("#lbStage");
   stage.replaceChildren();
   if (p.demo) {
@@ -606,13 +728,39 @@ function openLightbox(p) {
     stage.append(img);
   }
   $("#lbCap").textContent = p.title;
+  const several = lbIndex >= 0 && photosCache.length > 1;
+  $("#lbPrev").classList.toggle("hidden", !several);
+  $("#lbNext").classList.toggle("hidden", !several);
   $("#lightbox").classList.remove("hidden");
   $("#lbClose").focus();
 }
 function closeLightbox() { $("#lightbox").classList.add("hidden"); }
+function stepLightbox(dir) {
+  if (lbIndex < 0 || photosCache.length < 2) return;
+  lbIndex = (lbIndex + dir + photosCache.length) % photosCache.length;
+  openLightbox(photosCache[lbIndex]);
+}
 $("#lbClose").addEventListener("click", closeLightbox);
+$("#lbPrev").addEventListener("click", e => { e.stopPropagation(); stepLightbox(-1); });
+$("#lbNext").addEventListener("click", e => { e.stopPropagation(); stepLightbox(1); });
 $("#lightbox").addEventListener("click", e => { if (e.target.id === "lightbox") closeLightbox(); });
-addEventListener("keydown", e => { if (e.key === "Escape") closeLightbox(); });
+addEventListener("keydown", e => {
+  if (e.key === "Escape") closeLightbox();
+  if ($("#lightbox").classList.contains("hidden")) return;
+  if (e.key === "ArrowLeft") stepLightbox(-1);
+  if (e.key === "ArrowRight") stepLightbox(1);
+});
+(function lightboxSwipe() {
+  let x0 = null;
+  const lb = $("#lightbox");
+  lb.addEventListener("touchstart", e => { x0 = e.changedTouches[0].clientX; }, { passive: true });
+  lb.addEventListener("touchend", e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    x0 = null;
+    if (Math.abs(dx) > 50) stepLightbox(dx < 0 ? 1 : -1);
+  }, { passive: true });
+})();
 
 /* =========================================================
    VOICE MESSAGES
@@ -645,8 +793,8 @@ function renderVoices(list) {
 
   if (!list.length) {
     markSeen("voices", []);
-    box.append(emptyState("🎙️", "Voice notes are coming soon",
-      isAdmin ? "Tap ➕ Add, then choose “Voice messages”." : "Something to listen to, just for you 💗"));
+    box.append(emptyState("mic", "Voice notes are coming soon",
+      isAdmin ? "Tap Add, then choose “Voice messages”." : "Something to listen to, just for you 💗"));
     return;
   }
 
@@ -659,7 +807,8 @@ function renderVoices(list) {
     voiceAudios.push(audio);
 
     const card = el("article", "voice" + (isFresh("voices", v.name) ? " pop-in" : ""));
-    const btn = el("button", "v-play", "▶");
+    const btn = el("button", "v-play");
+    btn.append(iconEl("play"));
     btn.type = "button";
     btn.setAttribute("aria-label", "Play voice note: " + v.title);
 
@@ -686,9 +835,9 @@ function renderVoices(list) {
       audio.currentTime = ((e.clientX - r.left) / r.width) * audio.duration;
     });
 
-    audio.addEventListener("play", () => (btn.textContent = "⏸"));
-    audio.addEventListener("pause", () => { btn.textContent = "▶"; resumeMusicIfNeeded(); });
-    audio.addEventListener("ended", () => { btn.textContent = "▶"; fill.style.width = "0"; });
+    audio.addEventListener("play", () => setBtn(btn, "pause"));
+    audio.addEventListener("pause", () => { setBtn(btn, "play"); resumeMusicIfNeeded(); });
+    audio.addEventListener("ended", () => { setBtn(btn, "play"); fill.style.width = "0"; });
     audio.addEventListener("loadedmetadata", () => (time.textContent = fmt(audio.duration)));
     audio.addEventListener("timeupdate", () => {
       if (audio.duration) fill.style.width = (audio.currentTime / audio.duration) * 100 + "%";
@@ -712,7 +861,7 @@ function renderNotes(list) {
   board.replaceChildren();
   if (!list.length) {
     markSeen("notes", []);
-    board.append(emptyState("📝", "The wall is empty", "Be the first to stick a note!"));
+    board.append(emptyState("note", "The wall is empty", "Be the first to stick a note!"));
     return;
   }
   const keys = [];
@@ -738,15 +887,28 @@ async function loadNotes() {
     .from("notes").select("*").order("created_at", { ascending: false }).limit(60);
   if (error) {
     console.warn("Notes error:", error.message);
-    $("#noteBoard").replaceChildren(emptyState("😕", "Notes could not load", "Check that the notes table exists in Supabase."));
+    $("#noteBoard").replaceChildren(emptyState("alert", "Notes could not load", "Check that the notes table exists in Supabase."));
     return;
   }
   notesCache = data;
   renderNotes(notesCache);
 }
 
+const NOTE_MAX = 20000; // characters per note (matches maxlength in index.html)
+
+/* friendly text when the database refuses a note (e.g. its own, older length limit) */
+function noteErrorText(error) {
+  const msg = (error && error.message) || "";
+  if ((error && error.code === "23514") || /check constraint|too long|violates/i.test(msg)) {
+    return "This note is longer than your database currently accepts. Nothing was lost: your text is still here. Try a shorter note.";
+  }
+  return "The note could not be saved: " + msg;
+}
+
 $("#noteText").addEventListener("input", e => {
-  $("#noteCount").textContent = `${e.target.value.length} / 300`;
+  const len = e.target.value.length;
+  $("#noteCount").textContent = `${len} / ${NOTE_MAX}`;
+  $("#noteCount").classList.toggle("near-limit", len > NOTE_MAX * 0.9);
 });
 
 $("#noteForm").addEventListener("submit", async e => {
@@ -763,7 +925,7 @@ $("#noteForm").addEventListener("submit", async e => {
   } else {
     const { data, error } = await sb.from("notes").insert({ message }).select().single();
     if (error) {
-      toast("The note could not be saved: " + error.message, "error");
+      toast(noteErrorText(error), "error");
       submit.disabled = false;
       return;
     }
@@ -771,9 +933,10 @@ $("#noteForm").addEventListener("submit", async e => {
     renderNotes(notesCache);
   }
   input.value = "";
-  $("#noteCount").textContent = "0 / 300";
+  $("#noteCount").textContent = "0 / " + NOTE_MAX;
+  $("#noteCount").classList.remove("near-limit");
   submit.disabled = false;
-  toast("Note stuck on the wall 📌");
+  toast("Note stuck on the wall");
   burst(60);
 });
 
@@ -824,7 +987,7 @@ function setAdmin(on) {
   if (!on) {
     document.body.classList.remove("edit-mode");
     abEdit.setAttribute("aria-pressed", "false");
-    abEdit.textContent = "✏️ Edit mode";
+    setBtn(abEdit, "pencil", "Edit mode");
     if ($("#songsDlg").open) hideDlg($("#songsDlg"));
   }
   if (changed) {
@@ -912,7 +1075,7 @@ $("#loginForm").addEventListener("submit", async e => {
 async function logout() {
   await sb.auth.signOut();
   await syncAuth();
-  toast("Logged out. See you soon 💗");
+  toast("Logged out. See you soon");
 }
 $("#logoutBtn").addEventListener("click", logout);
 $("#abLogout").addEventListener("click", logout);
@@ -923,7 +1086,7 @@ $("#abSongs").addEventListener("click", () => { renderSongsManager(); showDlg($(
 abEdit.addEventListener("click", () => {
   const on = document.body.classList.toggle("edit-mode");
   abEdit.setAttribute("aria-pressed", String(on));
-  abEdit.textContent = on ? "✅ Done" : "✏️ Edit mode";
+  if (on) setBtn(abEdit, "check", "Done"); else setBtn(abEdit, "pencil", "Edit mode");
 });
 
 /* ---------- upload ---------- */
@@ -1014,7 +1177,7 @@ $("#uploadForm").addEventListener("submit", async e => {
   submit.disabled = false;
   await loadMedia();
   closeAdmin();
-  toast(`${ok} file${ok > 1 ? "s" : ""} uploaded 🎉`);
+  toast(`${ok} file${ok > 1 ? "s" : ""} uploaded`);
 });
 
 /* ---------- edit / delete: photos, voice notes, songs ---------- */
@@ -1067,11 +1230,11 @@ async function editNote(n) {
     title: "Edit note",
     label: "Note",
     value: n.message,
-    max: 300,
+    max: NOTE_MAX,
     multiline: true,
     save: async v => {
       const { data, error } = await sb.from("notes").update({ message: v }).eq("id", n.id).select();
-      if (error) throw new Error(error.message);
+      if (error) throw new Error(noteErrorText(error));
       if (!data || !data.length) throw new Error("Not allowed, or the note no longer exists.");
       notesCache = notesCache.map(x => (x.id === n.id ? data[0] : x));
       renderNotes(notesCache);
@@ -1104,12 +1267,14 @@ function renderSongsManager() {
   const box = $("#songsList");
   box.replaceChildren();
   if (!tracksCache.length) {
-    box.append(emptyState("🎵", "No songs yet", "Use “Add songs” to upload the first one."));
+    box.append(emptyState("music", "No songs yet", "Use “Add songs” to upload the first one."));
     return;
   }
   tracksCache.forEach(t => {
     const row = el("div", "song-row");
-    row.append(el("span", "song-name", "🎵 " + t.title));
+    const nm = el("span", "song-name");
+    nm.append(iconEl("music"), document.createTextNode(" " + t.title));
+    row.append(nm);
     const acts = adminActions(() => editMedia("music", t), () => deleteMedia("music", t, row), t.title);
     acts.classList.add("always");
     row.append(acts);
@@ -1165,7 +1330,7 @@ function setupReveal() {
 }
 
 (async function init() {
-  if (!sb) $("#demoBanner").classList.remove("hidden");
+  if (!sb) { $("#demoBanner").classList.remove("hidden"); document.body.classList.add("is-demo"); }
   showSkeletons();
   await Promise.all([loadMedia(), loadNotes()]);
   setupReveal();
@@ -1193,11 +1358,15 @@ const SCREENS = {
   letter: { id: "letter", title: "A letter for you",   hash: "#letter" },
   photos: { id: "photos", title: "Our little moments", hash: "#photos" },
   voices: { id: "voices", title: "Voice notes",        hash: "#voices" },
-  notes:  { id: "notes",  title: "Stick a note back",  hash: "#notes" }
+  notes:  { id: "notes",  title: "Stick a note back",  hash: "#notes" },
+  open:     { id: "open",     title: "Open when...",      hash: "#open" },
+  surprise: { id: "surprise", title: "Birthday surprise", hash: "#surprise" },
+  settings: { id: "settings", title: "Settings",          hash: "#settings" }
 };
 const HASH_TO_SCREEN = {
   "#top": "home", "#home": "home", "#letter": "letter",
-  "#photos": "photos", "#voices": "voices", "#notes": "notes"
+  "#photos": "photos", "#voices": "voices", "#notes": "notes",
+  "#open": "open", "#surprise": "surprise", "#settings": "settings"
 };
 const LEAVE_MS = 200;
 
@@ -1222,9 +1391,17 @@ function updateChrome() {
   $("#screenName").textContent = SCREENS[currentScreen].title;
   document.body.dataset.screen = currentScreen;
   document.querySelectorAll(".nav a").forEach(a => {
-    if (HASH_TO_SCREEN[a.getAttribute("href")] === currentScreen) a.setAttribute("aria-current", "page");
-    else a.removeAttribute("aria-current");
+    if (HASH_TO_SCREEN[a.getAttribute("href")] === currentScreen) {
+      a.setAttribute("aria-current", "page");
+      // keep the active tab in view when the nav scrolls sideways (small screens)
+      const nav = a.parentElement;
+      if (nav.scrollWidth > nav.clientWidth) {
+        nav.scrollTo({ left: a.offsetLeft - (nav.clientWidth - a.offsetWidth) / 2, behavior: reduceMotion ? "auto" : "smooth" });
+      }
+    } else a.removeAttribute("aria-current");
   });
+  // a video inside the surprise should not keep playing on another screen
+  if (currentScreen !== "surprise") document.querySelectorAll("#surpriseMedia video").forEach(v => v.pause());
 }
 
 /* fade the old screen out, then fade the new one in; only one is ever visible */
@@ -1316,6 +1493,307 @@ $("#homeBtn").addEventListener("click", () => navigate("home"));
     try { history.replaceState({ screen: start, idx: 0 }, "", routeUrl(start)); } catch (err) { /* ignore */ }
   }
   updateChrome();
+})();
+
+
+/* =========================================================
+   OPEN WHEN... LETTERS  (words live in OPEN_WHEN_LETTERS at the top)
+   ========================================================= */
+(function openWhenLetters() {
+  const grid = $("#openGrid");
+  const dlg = $("#owDlg");
+  const fill = t => String(t).replace(/\{name\}/g, CONFIG.NAME).replace(/\{from\}/g, CONFIG.FROM);
+  let lastCard = null;
+
+  function openLetter(l, card) {
+    lastCard = card;
+    $("#owKicker").textContent = l.kicker || "Open when";
+    $("#owTitle").textContent = fill(l.title);
+    const box = $("#owText");
+    box.replaceChildren();
+    (Array.isArray(l.message) ? l.message : [l.message]).forEach(t => box.append(el("p", "", fill(t))));
+    $("#owSign").textContent = "Always yours, " + CONFIG.FROM;
+    card.classList.add("is-opening"); // the little envelope flap opens first
+    setTimeout(() => {
+      showDlg(dlg);
+      $("#owClose").focus();
+      setTimeout(() => card.classList.remove("is-opening"), 400);
+    }, reduceMotion || noAnim() ? 0 : 320);
+  }
+
+  OPEN_WHEN_LETTERS.forEach((l, i) => {
+    const card = el("button", "ow-card");
+    card.type = "button";
+    card.style.setProperty("--r", [-2, 1.5, -1, 2, -1.5, 1][i % 6] + "deg");
+    card.style.setProperty("--d", i * 70 + "ms");
+    card.setAttribute("aria-label", `${l.kicker || "Open when"} ${fill(l.title)}`);
+    const ico = el("span", "ow-ico");
+    ico.append(iconEl(l.icon || "mail-open"));
+    const seal = el("span", "ow-seal");
+    seal.append(iconEl("heart-fill"));
+    card.append(
+      el("span", "tape tape-" + (i % 3)),
+      el("span", "ow-flap"),
+      ico,
+      el("span", "ow-card-kicker", l.kicker || "Open when"),
+      el("span", "ow-card-title", fill(l.title)),
+      seal
+    );
+    card.addEventListener("click", () => openLetter(l, card));
+    grid.append(card);
+  });
+
+  $("#owClose").addEventListener("click", () => hideDlg(dlg));
+  dlg.addEventListener("close", () => { if (lastCard) lastCard.focus(); });
+})();
+
+/* =========================================================
+   BIRTHDAY SURPRISE: 3D gift box
+   - spins forever until touched, then stops, lid opens, surprise appears
+   - media: SURPRISE_MEDIA_URL (permanent) or a local preview (this device only)
+   ========================================================= */
+(function birthdaySurprise() {
+  const stage = $("#giftStage");
+  const spin = $("#giftSpin");
+  const btn = $("#giftBtn");
+  const hint = $("#giftHint");
+  const reveal = $("#surpriseReveal");
+  const fill = t => String(t).replace(/\{name\}/g, CONFIG.NAME).replace(/\{from\}/g, CONFIG.FROM);
+  const HINT_TEXT = "A little surprise is waiting for you. Tap the gift box.";
+  let opened = false;
+  let timers = [];
+  let localUrl = null;
+  let localType = "";
+
+  /* build the cube faces for the box and the lid */
+  ["front", "back", "right", "left", "top", "bottom"].forEach(n => {
+    $("#giftBody").append(el("div", "gf f-" + n));
+    $("#giftLid").append(el("div", "gf f-" + n));
+  });
+  const bow = el("div", "gift-bow");
+  ["bow-a", "bow-b"].forEach(c => {
+    const plane = el("div", "bow-plane " + c);
+    plane.append(el("i", "loop loop-l"), el("i", "loop loop-r"));
+    bow.append(plane);
+  });
+  bow.append(el("i", "bow-knot"));
+  $("#giftLid").append(bow);
+
+  /* floating hearts and sparkles around the box */
+  (function particles() {
+    const box = $("#giftParticles");
+    const names = ["heart-fill", "sparkles", "star", "heart-fill", "sparkles", "flower"];
+    const tints = ["#ff8fab", "#ffd36b", "#d9c6ea", "#f06a8e", "#ffc8a2", "#bfe5d6"];
+    for (let i = 0; i < 14; i++) {
+      const p = el("span", "gp");
+      p.append(iconEl(names[i % names.length]));
+      p.style.left = 6 + Math.random() * 88 + "%";
+      p.style.fontSize = 12 + Math.random() * 14 + "px";
+      p.style.color = tints[i % tints.length];
+      p.style.animationDuration = 6 + Math.random() * 6 + "s";
+      p.style.animationDelay = -Math.random() * 10 + "s";
+      box.append(p);
+    }
+  })();
+
+  const later = (fn, ms) => timers.push(setTimeout(fn, reduceMotion || noAnim() ? 0 : ms));
+
+  /* freeze the spin and glide to face the front */
+  function stopSpin() {
+    let deg = 0;
+    try {
+      const m = new DOMMatrixReadOnly(getComputedStyle(spin).transform);
+      deg = Math.atan2(m.m31, m.m11) * 180 / Math.PI;
+    } catch (e) { /* no matrix support: just settle */ }
+    if (deg < 0) deg += 360;
+    spin.style.animation = "none";
+    spin.style.transition = "none";
+    spin.style.transform = `rotateY(${deg}deg)`;
+    void spin.offsetWidth; // apply the frozen angle before animating
+    spin.style.transition = "transform .9s cubic-bezier(.2,.8,.2,1)";
+    spin.style.transform = "rotateY(360deg)";
+  }
+
+  function mediaSource() {
+    if (localUrl) return { url: localUrl, type: localType };
+    const url = String(SURPRISE_MEDIA_URL || "").trim();
+    if (!url) return null;
+    let type = SURPRISE_MEDIA_TYPE;
+    if (type !== "image" && type !== "video") {
+      const ext = (url.split("?")[0].split("#")[0].split(".").pop() || "").toLowerCase();
+      if (/^(jpe?g|png|gif|webp|avif|svg|bmp)$/.test(ext)) type = "image";
+      else if (/^(mp4|webm|ogv|ogg|mov|m4v)$/.test(ext)) type = "video";
+      else type = "unknown";
+    }
+    return { url, type };
+  }
+
+  function makeVideo(url, onFail) {
+    const v = document.createElement("video");
+    v.controls = true;          // play / pause / seek
+    v.playsInline = true;
+    v.preload = "metadata";
+    v.src = url;
+    v.addEventListener("error", onFail);
+    let resume = false;         // lower the music while the video plays
+    v.addEventListener("play", () => { if (!music.paused) { resume = true; music.pause(); } });
+    const back = () => { if (resume) { resume = false; playMusic(); } };
+    v.addEventListener("pause", back);
+    v.addEventListener("ended", back);
+    return v;
+  }
+
+  function renderMedia() {
+    const box = $("#surpriseMedia");
+    box.replaceChildren();
+    box.classList.remove("has-media");
+    const src = mediaSource();
+    if (!src) return; // default surprise: message + confetti only
+    const fail = () => {
+      box.classList.remove("has-media");
+      box.replaceChildren(el("p", "sr-fail",
+        "This file could not be shown. Please use a JPG/PNG image or an MP4 (H.264) / WebM video."));
+    };
+    let node;
+    if (src.type === "video") {
+      node = makeVideo(src.url, fail);
+    } else {
+      node = document.createElement("img");
+      node.alt = "Your birthday surprise";
+      node.addEventListener("error", () => {
+        if (src.type === "unknown") { // not an image: maybe it is a video
+          box.replaceChildren(makeVideo(src.url, fail));
+          box.classList.add("has-media");
+        } else fail();
+      });
+      node.src = src.url;
+    }
+    box.append(node);
+    box.classList.add("has-media");
+  }
+
+  function showReveal() {
+    $("#surpriseTitle").textContent = fill(SURPRISE_TITLE);
+    const text = $("#surpriseText");
+    text.replaceChildren();
+    SURPRISE_MESSAGE.forEach(t => text.append(el("p", "", fill(t))));
+    renderMedia(); // media appears only now, after the visitor interacted
+    reveal.classList.remove("hidden");
+    reveal.classList.add("is-in");
+    burst(220);
+    later(() => reveal.scrollIntoView({ behavior: reduceMotion || noAnim() ? "auto" : "smooth", block: "center" }), 250);
+  }
+
+  function openGift() {
+    if (opened) return;
+    opened = true;
+    btn.setAttribute("aria-expanded", "true");
+    hint.textContent = "";
+    stopSpin();
+    later(() => { stage.classList.add("is-open"); burst(80); }, 900);   // lid lifts
+    later(showReveal, 1900);                                           // then the surprise
+  }
+
+  function closeGift() {
+    timers.forEach(clearTimeout);
+    timers = [];
+    opened = false;
+    btn.setAttribute("aria-expanded", "false");
+    stage.classList.remove("is-open");
+    reveal.classList.add("hidden");
+    reveal.classList.remove("is-in");
+    $("#surpriseMedia").querySelectorAll("video").forEach(v => v.pause());
+    $("#surpriseMedia").replaceChildren();
+    spin.style.removeProperty("animation");   // back to the endless rotation
+    spin.style.removeProperty("transition");
+    spin.style.removeProperty("transform");
+    hint.textContent = HINT_TEXT;
+    stage.scrollIntoView({ behavior: reduceMotion || noAnim() ? "auto" : "smooth", block: "center" });
+    btn.focus();
+  }
+
+  btn.addEventListener("click", openGift);
+  $("#giftReplay").addEventListener("click", closeGift);
+
+  /* local preview (this device only, nothing is uploaded) */
+  const fileInput = $("#surpriseFile");
+  const fileMsg = $("#surpriseFileMsg");
+  const clearBtn = $("#surpriseClear");
+  const DEFAULT_MSG = fileMsg.textContent;
+
+  fileInput.addEventListener("change", e => {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    const isImg = f.type.startsWith("image/");
+    const isVid = f.type.startsWith("video/");
+    if (!isImg && !isVid) {
+      fileMsg.textContent = "Please choose an image or a video file.";
+      e.target.value = "";
+      return;
+    }
+    if (localUrl) URL.revokeObjectURL(localUrl);
+    localUrl = URL.createObjectURL(f);
+    localType = isVid ? "video" : "image";
+    clearBtn.disabled = false;
+    fileMsg.textContent = `Previewing “${f.name}” on this device only. Nothing was uploaded.` +
+      (opened ? "" : " Tap the gift box to see it inside the surprise.");
+    if (opened) renderMedia();
+  });
+
+  clearBtn.addEventListener("click", () => {
+    if (localUrl) URL.revokeObjectURL(localUrl);
+    localUrl = null;
+    localType = "";
+    fileInput.value = "";
+    clearBtn.disabled = true;
+    fileMsg.textContent = DEFAULT_MSG;
+    if (opened) renderMedia();
+  });
+})();
+
+/* =========================================================
+   SETTINGS: theme + animations (saved on this device only)
+   Only these two choices are stored. No passwords, no private data.
+   ========================================================= */
+(function settingsPanel() {
+  const KEY = "hlu_settings";
+  const st = { theme: "pink", animations: !reduceMotion };
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY) || "null");
+    if (saved && typeof saved === "object") {
+      if (saved.theme === "pink" || saved.theme === "midnight") st.theme = saved.theme;
+      if (typeof saved.animations === "boolean") st.animations = saved.animations;
+    }
+  } catch (e) { /* storage blocked or corrupt: use defaults */ }
+
+  function apply() {
+    document.body.dataset.theme = st.theme;
+    document.body.classList.toggle("no-anim", !st.animations);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", st.theme === "midnight" ? "#1b1630" : "#ffd6e0");
+    document.querySelectorAll('input[name="theme"]').forEach(r => { r.checked = r.value === st.theme; });
+    $("#setAnim").checked = st.animations;
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) { /* ignore */ }
+  }
+
+  document.querySelectorAll('input[name="theme"]').forEach(r => {
+    r.addEventListener("change", () => {
+      if (!r.checked) return;
+      st.theme = r.value;
+      apply();
+      save();
+      toast(st.theme === "midnight" ? "Midnight lavender theme on" : "Original pink theme on");
+    });
+  });
+  $("#setAnim").addEventListener("change", e => {
+    st.animations = e.target.checked;
+    apply();
+    save();
+    toast(st.animations ? "Decorative animations on" : "Decorative animations off");
+  });
+  apply();
 })();
 
 } // end of startSite(): your original script ends here
