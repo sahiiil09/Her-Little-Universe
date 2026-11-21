@@ -7,29 +7,76 @@
   <meta name="theme-color" content="#ffd6e0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Gochi+Hand&family=Patrick+Hand&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="locked">
 
+  <!-- ============ ICON SET (inline SVG, one consistent style) ============ -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></symbol>
+      <symbol id="i-mail-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m3 10 9 6 9-6"/></symbol>
+      <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.8"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></symbol>
+      <symbol id="i-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3.5"/></symbol>
+      <symbol id="i-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+      <symbol id="i-note" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5A.5.5 0 0 1 4.5 4h15a.5.5 0 0 1 .5.5V15l-5 5H4.5a.5.5 0 0 1-.5-.5z"/><path d="M15 20v-4a1 1 0 0 1 1-1h4M8 9h8M8 13h4"/></symbol>
+      <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+      <symbol id="i-gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></symbol>
+      <symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M8 4.8v14.4a.6.6 0 0 0 .9.5l11.6-7.2a.6.6 0 0 0 0-1L8.9 4.3a.6.6 0 0 0-.9.5z"/></symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="6" y="4.5" width="4" height="15" rx="1.2"/><rect x="14" y="4.5" width="4" height="15" rx="1.2"/></symbol>
+      <symbol id="i-skip-back" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18.5 5.5v13L8 12z"/><path d="M5.5 5v14" fill="none"/></symbol>
+      <symbol id="i-skip-forward" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 5.5v13L16 12z"/><path d="M18.5 5v14" fill="none"/></symbol>
+      <symbol id="i-volume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></symbol>
+      <symbol id="i-volume-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6m0-6 6 6"/></symbol>
+      <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+      <symbol id="i-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.9 5.2A9.7 9.7 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3 3.9M6.6 6.7A16.6 16.6 0 0 0 2 12s3.5 7 10 7a9.8 9.8 0 0 0 4.4-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2M3 3l18 18"/></symbol>
+      <symbol id="i-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3.5a2.8 2.8 0 0 1 4 4L8 20.5 2.5 22 4 16.5z"/><path d="m14.5 6 4 4"/></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v5M14 11v5"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></symbol>
+      <symbol id="i-chevron-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></symbol>
+      <symbol id="i-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></symbol>
+      <symbol id="i-sparkles" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="m19 15 .8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol>
+      <symbol id="i-heart-fill" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-8.5-5-8.5-11.2A4.8 4.8 0 0 1 12 7.2a4.8 4.8 0 0 1 8.5 2.6C20.5 16 12 21 12 21z"/></symbol>
+      <symbol id="i-flower" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5.5" r="3.6"/><circle cx="18.2" cy="10" r="3.6"/><circle cx="15.8" cy="17.3" r="3.6"/><circle cx="8.2" cy="17.3" r="3.6"/><circle cx="5.8" cy="10" r="3.6"/><circle cx="12" cy="12" r="2.6" fill="#ffe29a"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+      <symbol id="i-film" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7 4v16M17 4v16M3 9h4M17 9h4M3 15h4M17 15h4"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+      <symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></symbol>
+      <symbol id="i-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l4 4v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M8 3v5h7V3M8 21v-7h8v7"/></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 4 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 4a2 2 0 0 0-3.4 0z"/><path d="M12 9.5v4M12 17h.01"/></symbol>
+      <symbol id="i-smile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2.2 4 2.2 4-2.2 4-2.2M9 9.5h.01M15 9.5h.01"/></symbol>
+      <symbol id="i-cloud-rain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2"/><path d="M8 19v2M12 19v2M16 19v2"/></symbol>
+      <symbol id="i-cake" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16v-8a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1z"/><path d="M4 17c2 0 2-1.5 4-1.5S10 17 12 17s2-1.5 4-1.5S18 17 20 17M12 12V9"/><path d="M12 9c-1 0-1.6-.8-1.6-1.7 0-1.1 1.6-2.6 1.6-2.6s1.6 1.5 1.6 2.6c0 .9-.6 1.7-1.6 1.7z"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.2 8 8 9 4.8-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+    </defs>
+  </svg>
+
   <!-- ============ 0. PASSWORD SCREEN (added) ============ -->
   <div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
-    <span class="gate-doodle d1" aria-hidden="true">✨</span>
-    <span class="gate-doodle d2" aria-hidden="true">💖</span>
-    <span class="gate-doodle d3" aria-hidden="true">🌸</span>
-    <span class="gate-doodle d4" aria-hidden="true">⭐</span>
+    <span class="gate-doodle d1" aria-hidden="true"><svg class="ico" aria-hidden="true"><use href="#i-sparkles"/></svg></span>
+    <span class="gate-doodle d2" aria-hidden="true"><svg class="ico" aria-hidden="true"><use href="#i-heart-fill"/></svg></span>
+    <span class="gate-doodle d3" aria-hidden="true"><svg class="ico" aria-hidden="true"><use href="#i-flower"/></svg></span>
+    <span class="gate-doodle d4" aria-hidden="true"><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg></span>
     <form id="gateForm" class="gate-card" autocomplete="off" novalidate>
       <span class="tape tape-0"></span>
-      <div class="gate-icon" aria-hidden="true">💌</div>
+      <div class="gate-icon" aria-hidden="true"><svg class="ico" aria-hidden="true"><use href="#i-mail-open"/></svg></div>
       <h1 id="gateTitle" class="gate-title">Her Little Universe</h1>
       <p class="gate-sub">This little world is private.<br>Enter the secret code to open it ✨</p>
       <div class="gate-field">
         <label for="gateCode" class="sr-only">Secret code</label>
         <input id="gateCode" type="password" inputmode="numeric" autocomplete="off" autocapitalize="off"
                spellcheck="false" maxlength="32" placeholder="• • • •" autofocus>
-        <button type="button" id="gateEye" class="gate-eye" aria-label="Show code" aria-pressed="false">👁️</button>
+        <button type="button" id="gateEye" class="gate-eye" aria-label="Show code" aria-pressed="false"><svg class="ico eye-show" aria-hidden="true"><use href="#i-eye"/></svg><svg class="ico eye-hide" aria-hidden="true"><use href="#i-eye-off"/></svg></button>
       </div>
-      <button type="submit" class="btn gate-go">Unlock 💌</button>
+      <button type="submit" class="btn gate-go"><svg class="ico" aria-hidden="true"><use href="#i-lock"/></svg> Unlock</button>
       <p id="gateMsg" class="gate-msg" role="alert" aria-live="assertive"></p>
       <noscript><p class="gate-msg">Please turn on JavaScript to open this page.</p></noscript>
     </form>
@@ -48,31 +95,34 @@
       <span class="env-letter">For <b data-name>Suhu</b> 💌</span>
       <span class="env-front"></span>
       <span class="env-flap"></span>
-      <span class="env-seal">♥</span>
+      <span class="env-seal"><svg class="ico" aria-hidden="true"><use href="#i-heart-fill"/></svg></span>
     </button>
-    <p class="intro-hint">tap the envelope to open ✨</p>
+    <p class="intro-hint">tap the envelope to open</p>
   </div>
 
   <!-- ============ 2. MAIN SITE ============ -->
   <main id="site" class="site hidden">
 
     <div id="demoBanner" class="demo-banner hidden">
-      🧪 Demo mode: open <b>script.js</b> and paste your Supabase URL + key to go live.
+      Demo mode: open <b>script.js</b> and paste your Supabase URL + key to go live.
     </div>
 
-    <nav class="nav" aria-label="Sections">
-      <a href="#top">🏠 Home</a>
-      <a href="#letter">💌 Letter</a>
-      <a href="#photos">📸 Photos</a>
-      <a href="#voices">🎙️ Voice</a>
-      <a href="#notes">📝 Notes</a>
+    <nav class="nav" id="mainNav" aria-label="Sections">
+      <a href="#top"><svg class="ico" aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></a>
+      <a href="#letter"><svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg><span>Letter</span></a>
+      <a href="#photos"><svg class="ico" aria-hidden="true"><use href="#i-image"/></svg><span>Photos</span></a>
+      <a href="#voices"><svg class="ico" aria-hidden="true"><use href="#i-mic"/></svg><span>Voice</span></a>
+      <a href="#notes"><svg class="ico" aria-hidden="true"><use href="#i-note"/></svg><span>Notes</span></a>
+      <a href="#open"><svg class="ico" aria-hidden="true"><use href="#i-mail-open"/></svg><span>Open When</span></a>
+      <a href="#surprise"><svg class="ico" aria-hidden="true"><use href="#i-gift"/></svg><span>Surprise</span></a>
+      <a href="#settings"><svg class="ico" aria-hidden="true"><use href="#i-settings"/></svg><span>Settings</span></a>
     </nav>
 
     <!-- Back / Home bar: visible on inner screens only -->
     <div id="screenBar" class="screen-bar hidden">
-      <button type="button" id="backBtn" class="sb-btn" aria-label="Go back">← Back</button>
+      <button type="button" id="backBtn" class="sb-btn" aria-label="Go back"><svg class="ico" aria-hidden="true"><use href="#i-arrow-left"/></svg> Back</button>
       <span id="screenName" class="sb-title" aria-live="polite"></span>
-      <button type="button" id="homeBtn" class="sb-btn" aria-label="Go to home screen">🏠 Home</button>
+      <button type="button" id="homeBtn" class="sb-btn" aria-label="Go to home screen"><svg class="ico" aria-hidden="true"><use href="#i-home"/></svg> Home</button>
     </div>
 
     <!-- HERO -->
@@ -97,27 +147,39 @@
       <nav class="home-menu" aria-label="Open a section">
         <a href="#letter" class="menu-card">
           <span class="tape tape-0"></span>
-          <span class="mc-icon" aria-hidden="true">💌</span>
+          <span class="mc-icon" aria-hidden="true"><svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg></span>
           <span class="mc-title">A letter for you</span>
           <span class="mc-sub">words from my heart</span>
         </a>
         <a href="#photos" class="menu-card">
           <span class="tape tape-1"></span>
-          <span class="mc-icon" aria-hidden="true">📸</span>
+          <span class="mc-icon" aria-hidden="true"><svg class="ico" aria-hidden="true"><use href="#i-image"/></svg></span>
           <span class="mc-title">Our little moments</span>
           <span class="mc-sub">your photo wall</span>
         </a>
         <a href="#voices" class="menu-card">
           <span class="tape tape-2"></span>
-          <span class="mc-icon" aria-hidden="true">🎙️</span>
+          <span class="mc-icon" aria-hidden="true"><svg class="ico" aria-hidden="true"><use href="#i-mic"/></svg></span>
           <span class="mc-title">Voice notes</span>
           <span class="mc-sub">press play, smile</span>
         </a>
         <a href="#notes" class="menu-card">
           <span class="tape tape-0"></span>
-          <span class="mc-icon" aria-hidden="true">📝</span>
+          <span class="mc-icon" aria-hidden="true"><svg class="ico" aria-hidden="true"><use href="#i-note"/></svg></span>
           <span class="mc-title">Stick a note back</span>
           <span class="mc-sub">leave me a note</span>
+        </a>
+        <a href="#open" class="menu-card">
+          <span class="tape tape-1"></span>
+          <span class="mc-icon" aria-hidden="true"><svg class="ico" aria-hidden="true"><use href="#i-mail-open"/></svg></span>
+          <span class="mc-title">Open when...</span>
+          <span class="mc-sub">six little letters</span>
+        </a>
+        <a href="#surprise" class="menu-card">
+          <span class="tape tape-2"></span>
+          <span class="mc-icon" aria-hidden="true"><svg class="ico" aria-hidden="true"><use href="#i-gift"/></svg></span>
+          <span class="mc-title">Birthday surprise</span>
+          <span class="mc-sub">tap the gift box</span>
         </a>
       </nav>
     </header>
@@ -136,37 +198,121 @@
     <!-- PHOTOS -->
     <section id="photos" class="section screen" data-screen="photos" tabindex="-1">
       <h2 class="sec-title">Our little moments</h2>
-      <p class="sec-sub">tap a photo to see it big 📸</p>
+      <p class="sec-sub">tap a photo to see it big</p>
       <div id="photoWall" class="wall"></div>
     </section>
 
     <!-- VOICE MESSAGES -->
     <section id="voices" class="section screen" data-screen="voices" tabindex="-1">
       <h2 class="sec-title">Voice notes, just for you</h2>
-      <p class="sec-sub">press play and listen with a smile 🎧</p>
+      <p class="sec-sub">press play and listen with a smile</p>
       <div id="voiceList" class="voices"></div>
     </section>
 
     <!-- NOTES -->
     <section id="notes" class="section screen" data-screen="notes" tabindex="-1">
       <h2 class="sec-title">Stick a note back</h2>
-      <p class="sec-sub">write anything, it will stay on this wall 💗</p>
+      <p class="sec-sub">write anything, it will stay on this wall</p>
       <form id="noteForm" class="note-form">
         <label for="noteText" class="sr-only">Your note</label>
-        <textarea id="noteText" maxlength="300" rows="3" placeholder="Write a little note here..." required></textarea>
+        <textarea id="noteText" maxlength="20000" rows="5" placeholder="Write a little note here..." required></textarea>
         <div class="note-row">
-          <span id="noteCount" class="muted">0 / 300</span>
-          <button class="btn" type="submit">Stick it 📌</button>
+          <span id="noteCount" class="muted">0 / 20000</span>
+          <button class="btn" type="submit"><svg class="ico" aria-hidden="true"><use href="#i-heart-fill"/></svg> Stick it</button>
         </div>
       </form>
       <div id="noteBoard" class="board"></div>
     </section>
 
-    <!-- SECRET ADMIN (open with  index.html#admin ) -->
+    <!-- OPEN WHEN LETTERS (cards are built from OPEN_WHEN_LETTERS in script.js) -->
+    <section id="open" class="section screen" data-screen="open" tabindex="-1">
+      <h2 class="sec-title">Open when...</h2>
+      <p class="sec-sub">six little letters, for six little moments</p>
+      <div id="openGrid" class="ow-grid"></div>
+    </section>
+
+    <!-- BIRTHDAY SURPRISE -->
+    <section id="surprise" class="section screen" data-screen="surprise" tabindex="-1">
+      <h2 class="sec-title">Birthday surprise</h2>
+      <p class="sec-sub">a little surprise is waiting for you</p>
+
+      <div id="giftStage" class="gift-stage">
+        <div class="gift-particles" id="giftParticles" aria-hidden="true"></div>
+        <div class="gift-glow" aria-hidden="true"></div>
+        <div class="gift-scene" aria-hidden="true">
+          <div class="gift-tilt">
+            <div class="gift-spin" id="giftSpin">
+              <div class="gift-part gift-body" id="giftBody"></div>
+              <div class="gift-part gift-lid" id="giftLid"></div>
+            </div>
+          </div>
+        </div>
+        <div class="gift-shadow" aria-hidden="true"></div>
+        <button type="button" id="giftBtn" class="gift-hit" aria-expanded="false" aria-controls="surpriseReveal">
+          <span class="sr-only">Open your birthday gift</span>
+        </button>
+      </div>
+      <p id="giftHint" class="gift-hint">A little surprise is waiting for you. Tap the gift box.</p>
+
+      <div id="surpriseReveal" class="surprise-reveal hidden" aria-live="polite">
+        <div class="sr-card">
+          <p class="sr-kicker">Happy Birthday</p>
+          <h3 id="surpriseTitle" class="sr-title"></h3>
+          <div id="surpriseMedia" class="sr-media"></div>
+          <div id="surpriseText" class="sr-text"></div>
+          <button type="button" id="giftReplay" class="btn ghost">Close the box again</button>
+        </div>
+      </div>
+
+      <div class="surprise-picker">
+        <p class="sp-title"><svg class="ico" aria-hidden="true"><use href="#i-film"/></svg> Preview your own image or video</p>
+        <div class="row">
+          <label class="btn ghost sp-file" for="surpriseFile"><svg class="ico" aria-hidden="true"><use href="#i-upload"/></svg> Choose from this device</label>
+          <input id="surpriseFile" type="file" accept="image/*,video/*" class="sr-only">
+          <button type="button" id="surpriseClear" class="btn ghost" disabled>Remove preview</button>
+        </div>
+        <p id="surpriseFileMsg" class="muted" role="status">Preview only: shown on this device and never uploaded. For a permanent surprise, paste a direct link into <b>SURPRISE_MEDIA_URL</b> in script.js.</p>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="settings" class="section screen" data-screen="settings" tabindex="-1">
+      <h2 class="sec-title">Settings</h2>
+      <p class="sec-sub">make this little universe feel just right</p>
+      <div class="settings-grid">
+        <fieldset class="set-card">
+          <legend>Appearance</legend>
+          <div class="theme-options">
+            <label class="theme-opt">
+              <input type="radio" name="theme" value="pink" checked>
+              <span class="theme-ui"><span class="swatch swatch-pink" aria-hidden="true"></span>
+                <b>Original pink</b><small>soft scrapbook, cream and blush</small></span>
+            </label>
+            <label class="theme-opt">
+              <input type="radio" name="theme" value="midnight">
+              <span class="theme-ui"><span class="swatch swatch-midnight" aria-hidden="true"></span>
+                <b>Midnight lavender</b><small>calm, dark and dreamy</small></span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset class="set-card">
+          <legend>Animations</legend>
+          <label class="switch-row" for="setAnim">
+            <span class="sw-text"><b>Decorative animations</b>
+              <small>floating doodles, gentle motion and confetti</small></span>
+            <input id="setAnim" type="checkbox" role="switch" checked>
+            <span class="switch-ui" aria-hidden="true"></span>
+          </label>
+        </fieldset>
+      </div>
+      <p class="muted set-note">Saved only on this device. Nothing here changes your account or the content.</p>
+    </section>
+
+    <!-- ADMIN PANEL (open with  index.html#admin ) -->
     <section id="admin" class="section admin hidden" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
       <div class="paper-card">
-        <button type="button" id="adminClose" class="dlg-x" aria-label="Close admin panel">✕</button>
-        <h2 class="sec-title" id="adminTitle">🔐 Secret corner</h2>
+        <button type="button" id="adminClose" class="dlg-x" aria-label="Close admin panel"><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg></button>
+        <h2 class="sec-title" id="adminTitle"><svg class="ico" aria-hidden="true"><use href="#i-lock"/></svg> Admin Panel</h2>
         <p id="adminMsg" class="muted"></p>
 
         <form id="loginForm">
@@ -178,9 +324,9 @@
         <form id="uploadForm" class="hidden">
           <label>Where to upload?
             <select id="upBucket">
-              <option value="photos">📸 Photos</option>
-              <option value="music">🎵 Music</option>
-              <option value="voices">🎙️ Voice messages</option>
+              <option value="photos">Photos</option>
+              <option value="music">Music</option>
+              <option value="voices">Voice messages</option>
             </select>
           </label>
           <label>Caption / title (optional, only when uploading 1 file)
@@ -190,7 +336,7 @@
             <input id="upFiles" type="file" accept="image/*" multiple required>
           </label>
           <div class="row">
-            <button class="btn" type="submit">Upload 💖</button>
+            <button class="btn" type="submit"><svg class="ico" aria-hidden="true"><use href="#i-upload"/></svg> Upload</button>
             <button class="btn ghost" type="button" id="logoutBtn">Logout</button>
           </div>
         </form>
@@ -199,29 +345,29 @@
     </section>
 
     <footer class="footer">
-      <p>Made with 💖 by <span id="fromName"></span> · <a href="#admin" id="adminLink" aria-label="Admin">🔒</a></p>
+      <p>Made with love by <span id="fromName"></span> · <a href="#admin" id="adminLink" aria-label="Admin"><svg class="ico" aria-hidden="true"><use href="#i-lock"/></svg></a></p>
     </footer>
   </main>
 
   <!-- ============ 3. MUSIC PLAYER ============ -->
   <div id="player" class="player hidden" role="region" aria-label="Music player">
-    <button id="prevBtn" class="pbtn" aria-label="Previous song">⏮</button>
-    <button id="playBtn" class="pbtn main" aria-label="Play or pause">▶</button>
-    <button id="nextBtn" class="pbtn" aria-label="Next song">⏭</button>
+    <button id="prevBtn" class="pbtn" aria-label="Previous song"><svg class="ico" aria-hidden="true"><use href="#i-skip-back"/></svg></button>
+    <button id="playBtn" class="pbtn main" aria-label="Play or pause"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg></button>
+    <button id="nextBtn" class="pbtn" aria-label="Next song"><svg class="ico" aria-hidden="true"><use href="#i-skip-forward"/></svg></button>
     <div class="p-info">
-      <span id="songTitle" class="p-title">🎵</span>
+      <span class="p-line"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span id="songTitle" class="p-title">Music</span></span>
       <input id="seek" type="range" min="0" max="100" value="0" aria-label="Seek">
     </div>
-    <button id="muteBtn" class="pbtn" aria-label="Mute or unmute">🔊</button>
+    <button id="muteBtn" class="pbtn" aria-label="Mute or unmute"><svg class="ico" aria-hidden="true"><use href="#i-volume"/></svg></button>
   </div>
 
   <!-- ============ ADMIN TOOLS ============
        UI only. Real protection = Supabase Row Level Security (see setup SQL). -->
   <div id="adminBar" class="admin-bar hidden" role="toolbar" aria-label="Admin tools">
-    <span class="ab-badge">✨ Admin</span>
-    <button type="button" id="abUpload" class="ab-btn">➕ Add</button>
-    <button type="button" id="abSongs" class="ab-btn">🎵 Songs</button>
-    <button type="button" id="abEdit" class="ab-btn" aria-pressed="false">✏️ Edit mode</button>
+    <span class="ab-badge"><svg class="ico" aria-hidden="true"><use href="#i-sparkles"/></svg> Admin</span>
+    <button type="button" id="abUpload" class="ab-btn"><svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg> Add</button>
+    <button type="button" id="abSongs" class="ab-btn"><svg class="ico" aria-hidden="true"><use href="#i-music"/></svg> Songs</button>
+    <button type="button" id="abEdit" class="ab-btn" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#i-pencil"/></svg> Edit mode</button>
     <button type="button" id="abLogout" class="ab-btn">Logout</button>
   </div>
 
@@ -246,18 +392,31 @@
       <p id="editErr" class="dlg-err" role="alert"></p>
       <div class="row dlg-actions">
         <button type="button" id="editCancel" class="btn ghost">Cancel</button>
-        <button type="submit" class="btn">Save 💾</button>
+        <button type="submit" class="btn"><svg class="ico" aria-hidden="true"><use href="#i-save"/></svg> Save</button>
       </div>
     </form>
   </dialog>
 
   <dialog id="songsDlg" class="glass-dialog" aria-labelledby="songsTitle">
     <div class="dlg-body">
-      <h3 id="songsTitle" class="dlg-title">🎵 Playlist</h3>
+      <h3 id="songsTitle" class="dlg-title"><svg class="ico" aria-hidden="true"><use href="#i-music"/></svg> Playlist</h3>
       <div id="songsList" class="songs-list"></div>
       <div class="row dlg-actions">
         <button type="button" id="songsClose" class="btn ghost">Close</button>
-        <button type="button" id="songsAdd" class="btn">➕ Add songs</button>
+        <button type="button" id="songsAdd" class="btn"><svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg> Add songs</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="owDlg" class="glass-dialog ow-dialog" aria-labelledby="owTitle">
+    <div class="ow-body">
+      <button type="button" id="owClose" class="dlg-x" aria-label="Close letter"><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg></button>
+      <div class="ow-paper">
+        <span class="tape tape-0" aria-hidden="true"></span>
+        <p id="owKicker" class="ow-kicker"></p>
+        <h3 id="owTitle" class="ow-title"></h3>
+        <div id="owText" class="ow-text"></div>
+        <p id="owSign" class="ow-sign"></p>
       </div>
     </div>
   </dialog>
@@ -266,7 +425,9 @@
 
   <!-- ============ 4. LIGHTBOX ============ -->
   <div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Photo viewer">
-    <button id="lbClose" class="lb-close" aria-label="Close">✕</button>
+    <button id="lbClose" class="lb-close" aria-label="Close"><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg></button>
+    <button id="lbPrev" class="lb-nav lb-prev" aria-label="Previous photo"><svg class="ico" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+    <button id="lbNext" class="lb-nav lb-next" aria-label="Next photo"><svg class="ico" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
     <figure class="lb-fig">
       <div id="lbStage" class="lb-stage"></div>
       <figcaption id="lbCap"></figcaption>
