@@ -267,10 +267,11 @@
       <div class="surprise-picker">
         <p class="sp-title"><svg class="ico" aria-hidden="true"><use href="#i-film"/></svg> Preview your own image or video</p>
         <div class="row">
-          <label class="btn ghost sp-file" for="surpriseFile"><svg class="ico" aria-hidden="true"><use href="#i-upload"/></svg> Choose from this device</label>
-          <input id="surpriseFile" type="file" accept="image/*,video/*" class="sr-only">
+          <label class="btn ghost sp-file" for="surpriseFile"><svg class="ico" aria-hidden="true"><use href="#i-upload"/></svg> Choose image or video</label>
+          <input id="surpriseFile" type="file" accept="image/*,video/*,.mp4,.m4v,.webm,.ogv,.mov,.mkv" class="sr-only">
           <button type="button" id="surpriseClear" class="btn ghost" disabled>Remove preview</button>
         </div>
+        <div id="surprisePreview" class="sp-preview hidden"></div>
         <p id="surpriseFileMsg" class="muted" role="status">Preview only: shown on this device and never uploaded. For a permanent surprise, paste a direct link into <b>SURPRISE_MEDIA_URL</b> in script.js.</p>
       </div>
     </section>
@@ -330,7 +331,8 @@
             </select>
           </label>
           <label>Caption / title (optional, only when uploading 1 file)
-            <input id="upCaption" type="text" maxlength="60" placeholder="e.g. Our first coffee date">
+            <textarea id="upCaption" rows="2" maxlength="20000" placeholder="e.g. Our first coffee date"></textarea>
+            <span id="upCaptionCount" class="muted cap-count">0 / 20000</span>
           </label>
           <label>Choose files
             <input id="upFiles" type="file" accept="image/*" multiple required>
@@ -389,6 +391,7 @@
       <p id="editLabel" class="muted"></p>
       <input id="editInput" type="text" aria-labelledby="editLabel" autocomplete="off">
       <textarea id="editArea" rows="4" aria-labelledby="editLabel" class="hidden"></textarea>
+      <p id="editCount" class="muted edit-count" aria-hidden="true"></p>
       <p id="editErr" class="dlg-err" role="alert"></p>
       <div class="row dlg-actions">
         <button type="button" id="editCancel" class="btn ghost">Cancel</button>
