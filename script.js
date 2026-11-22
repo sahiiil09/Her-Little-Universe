@@ -359,9 +359,13 @@ function editDialog({ title, label, value = "", max = 60, multiline = false, sav
     input.maxLength = max;
     input.value = value;
     $("#editErr").textContent = "";
+    $("#editCount").textContent = `${value.length} / ${max}`;
     let saved = false;
 
-    const onInput = () => ($("#editErr").textContent = "");
+    const onInput = () => {
+      $("#editErr").textContent = "";
+      $("#editCount").textContent = `${input.value.length} / ${max}`;
+    };
     const onSubmit = async ev => {
       ev.preventDefault();
       const v = input.value.trim();
@@ -619,6 +623,46 @@ $("#openBtn").addEventListener("click", () => {
 const IMG_RE = /\.(jpe?g|png|gif|webp|avif)$/i;
 const AUDIO_RE = /\.(mp3|m4a|aac|wav|ogg|opus|weba|webm|mp4)$/i;
 
+/* =========================================================
+   EXTRA TEXT FOR MEDIA TITLES (emoji + long captions)
+   A photo's title is stored in its storage FILE NAME, and file names cannot hold
+   emoji or thousands of characters. So when a title does not fit in the file name,
+   the full text is kept in a tiny "_meta.json" file in the same bucket.
+   - Existing files and their names are never touched.
+   - Titles that fit in the file name (most of them) behave exactly as before.
+   - If _meta.json is missing or unreadable, the old file-name titles are shown.
+   ========================================================= */
+const META_FILE = "_meta.json";
+const TITLE_MAX = { photos: 20000, music: 60, voices: 60 }; // characters per title / caption
+
+/* returns {} when there is no file yet, null when it could not be read (never overwrite then) */
+async function loadMeta(bucket) {
+  if (!sb) return {};
+  try {
+    const url = sb.storage.from(bucket).getPublicUrl(META_FILE).data.publicUrl + "?t=" + Date.now();
+    const res = await fetch(url, { cache: "no-store" });
+    if (res.status === 400 || res.status === 404) return {};
+    if (!res.ok) return null;
+    const raw = await res.json();
+    const out = {};
+    if (raw && typeof raw === "object") {
+      Object.keys(raw).forEach(k => { if (raw[k] && typeof raw[k].t === "string") out[k] = { t: raw[k].t }; });
+    }
+    return out;
+  } catch (e) {
+    return null;
+  }
+}
+async function saveMeta(bucket, meta) {
+  const blob = new Blob([JSON.stringify(meta)], { type: "application/json" });
+  const { error } = await sb.storage.from(bucket).upload(META_FILE, blob, {
+    upsert: true, contentType: "application/json", cacheControl: "0"
+  });
+  if (error) throw new Error("Could not save the full text: " + error.message);
+}
+const titleNeedsMeta = (name, title) => title !== prettify(name);
+const altText = t => Array.from(String(t)).slice(0, 150).join(""); // image alt text stays short
+
 async function listFiles(bucket, regex) {
   if (!sb) return [];
   const { data, error } = await sb.storage.from(bucket).list("", {
@@ -626,11 +670,12 @@ async function listFiles(bucket, regex) {
     sortBy: { column: "name", order: "asc" }
   });
   if (error) { console.warn(`Could not list "${bucket}":`, error.message); return null; }
+  const meta = (await loadMeta(bucket)) || {};
   return data
     .filter(f => f.id && !f.name.startsWith(".") && regex.test(f.name))
     .map(f => ({
       name: f.name,
-      title: prettify(f.name),
+      title: (meta[f.name] && meta[f.name].t) || prettify(f.name),
       url: sb.storage.from(bucket).getPublicUrl(f.name).data.publicUrl
     }));
 }
@@ -689,7 +734,7 @@ function renderPhotos(list) {
     } else {
       const img = document.createElement("img");
       img.loading = "lazy";
-      img.alt = p.title;
+      img.alt = altText(p.title);
       img.src = p.url;
       frame.append(img);
     }
@@ -724,7 +769,7 @@ function openLightbox(p) {
   } else {
     const img = document.createElement("img");
     img.src = p.url;
-    img.alt = p.title;
+    img.alt = altText(p.title);
     stage.append(img);
   }
   $("#lbCap").textContent = p.title;
@@ -1022,6 +1067,9 @@ function syncAccept() {
   $("#upFiles").accept = $("#upBucket").value === "photos" ? "image/*" : "audio/*";
 }
 $("#upBucket").addEventListener("change", syncAccept);
+$("#upCaption").addEventListener("input", e => {
+  $("#upCaptionCount").textContent = `${e.target.value.length} / ${TITLE_MAX.photos}`;
+});
 
 function openAdmin(bucket) {
   if (bucket) { $("#upBucket").value = bucket; syncAccept(); }
@@ -1123,6 +1171,8 @@ $("#uploadForm").addEventListener("submit", async e => {
   const status = $("#upStatus");
   const submit = e.submitter || $("#uploadForm button[type=submit]");
   if (!files.length) { status.textContent = "Please choose at least one file."; return; }
+  const capMax = TITLE_MAX[bucket] || 60;
+  if (caption.length > capMax) { status.textContent = `The caption is too long for this type (max ${capMax} characters).`; return; }
 
   // validate type + size before sending anything
   const wantImage = bucket === "photos";
@@ -1140,6 +1190,7 @@ $("#uploadForm").addEventListener("submit", async e => {
   submit.disabled = true;
   status.classList.add("busy");
   let ok = 0;
+  const newTitles = {}; // full captions that do not fit in a file name
   for (let i = 0; i < files.length; i++) {
     const f = files[i];
     status.textContent = `Uploading ${i + 1} of ${files.length}...`;
@@ -1156,8 +1207,9 @@ $("#uploadForm").addEventListener("submit", async e => {
         return;
       }
     }
+    const objName = makeFileName(f, caption, ext, i);
     const { error } = await sb.storage.from(bucket).upload(
-      makeFileName(f, caption, ext, i), body, { contentType: body.type || f.type, upsert: false }
+      objName, body, { contentType: body.type || f.type, upsert: false }
     );
     if (error) {
       status.classList.remove("busy");
@@ -1168,11 +1220,24 @@ $("#uploadForm").addEventListener("submit", async e => {
       return;
     }
     ok++;
+    if (caption && titleNeedsMeta(objName, caption)) newTitles[objName] = { t: caption };
+  }
+
+  if (Object.keys(newTitles).length) { // keep the emoji / long caption next to the photo
+    try {
+      const meta = await loadMeta(bucket);
+      if (meta === null) throw new Error("Could not read the saved titles.");
+      Object.assign(meta, newTitles);
+      await saveMeta(bucket, meta);
+    } catch (err) {
+      toast("Uploaded, but the full caption could not be saved: " + err.message, "error");
+    }
   }
 
   status.classList.remove("busy");
   status.textContent = "";
   $("#uploadForm").reset();
+  $("#upCaptionCount").textContent = "0 / " + TITLE_MAX.photos;
   syncAccept();
   submit.disabled = false;
   await loadMedia();
@@ -1185,21 +1250,37 @@ async function renameFile(bucket, item, newTitle) {
   const prefix = (item.name.match(/^\d+[-_ .]*/) || [""])[0]; // keep the order number
   const dot = item.name.lastIndexOf(".");
   const ext = dot > -1 ? item.name.slice(dot) : "";
-  const slug = newTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60);
-  if (!slug) throw new Error("Please use letters or numbers in the title.");
+  const slug = newTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "caption";
   const newName = prefix + slug + ext;
-  if (newName === item.name) return;
-  const { error } = await sb.storage.from(bucket).move(item.name, newName);
-  if (error) throw new Error(error.message || "Could not rename.");
+
+  // 1) save the full text for the new name first (harmless if the rename below fails)
+  const meta = await loadMeta(bucket);
+  if (meta === null) throw new Error("Could not read the saved titles. Please try again.");
+  const hadOld = !!meta[item.name];
+  const before = JSON.stringify(meta);
+  if (titleNeedsMeta(newName, newTitle)) meta[newName] = { t: newTitle }; else delete meta[newName];
+  if (newName === item.name && hadOld && !meta[newName]) delete meta[item.name];
+  if (JSON.stringify(meta) !== before) await saveMeta(bucket, meta);
+
+  // 2) rename the file only when its name really changes
+  if (newName !== item.name) {
+    const { error } = await sb.storage.from(bucket).move(item.name, newName);
+    if (error) throw new Error(error.message || "Could not rename.");
+    // 3) forget the old name's text (best effort)
+    if (hadOld) {
+      try { delete meta[item.name]; await saveMeta(bucket, meta); } catch (e) { /* harmless leftover */ }
+    }
+  }
 }
 
 async function editMedia(bucket, item) {
   if (!isAdmin) return;
   const saved = await editDialog({
     title: "Edit title",
-    label: "Title",
+    label: bucket === "photos" ? "Caption / title (emoji and line breaks are fine)" : "Title",
     value: item.title,
-    max: 60,
+    max: TITLE_MAX[bucket] || 60,
+    multiline: bucket === "photos",
     save: async v => { await renameFile(bucket, item, v); await loadMedia(); }
   });
   if (saved) toast("Title updated ✓");
@@ -1216,6 +1297,10 @@ async function deleteMedia(bucket, item, card) {
       if (error) throw new Error(error.message);
       // storage returns an empty list (no error) when the database refuses the delete
       if (!data || !data.length) throw new Error("Not allowed, or the file is already gone.");
+      try { // forget the stored full title, if any
+        const meta = await loadMeta(bucket);
+        if (meta && meta[item.name]) { delete meta[item.name]; await saveMeta(bucket, meta); }
+      } catch (e) { /* harmless leftover */ }
       if (card) card.classList.add("leaving");
       await sleep(240);
       await loadMedia();
@@ -1401,7 +1486,7 @@ function updateChrome() {
     } else a.removeAttribute("aria-current");
   });
   // a video inside the surprise should not keep playing on another screen
-  if (currentScreen !== "surprise") document.querySelectorAll("#surpriseMedia video").forEach(v => v.pause());
+  if (currentScreen !== "surprise") document.querySelectorAll("#surpriseMedia video, #surprisePreview video").forEach(v => v.pause());
 }
 
 /* fade the old screen out, then fade the new one in; only one is ever visible */
@@ -1678,6 +1763,7 @@ $("#homeBtn").addEventListener("click", () => navigate("home"));
     text.replaceChildren();
     SURPRISE_MESSAGE.forEach(t => text.append(el("p", "", fill(t))));
     renderMedia(); // media appears only now, after the visitor interacted
+    $("#surprisePreview").querySelectorAll("video").forEach(v => v.pause()); // never two videos at once
     reveal.classList.remove("hidden");
     reveal.classList.add("is-in");
     burst(220);
@@ -1721,13 +1807,36 @@ $("#homeBtn").addEventListener("click", () => navigate("home"));
   const clearBtn = $("#surpriseClear");
   const DEFAULT_MSG = fileMsg.textContent;
 
+  const VIDEO_EXT = /\.(mp4|m4v|webm|ogv|ogg|mov|mkv)$/i;
+  const IMAGE_EXT = /\.(jpe?g|png|gif|webp|avif|svg|bmp|heic|heif)$/i;
+  const preview = $("#surprisePreview");
+
+  /* small preview right in the picker, so the file can be checked before the gift is opened */
+  function showPreview() {
+    preview.replaceChildren();
+    if (!localUrl) { preview.classList.add("hidden"); return; }
+    const fail = () => preview.replaceChildren(el("p", "sr-fail",
+      "This file could not be played or shown by your browser. Please use a JPG/PNG image or an MP4 (H.264) / WebM video."));
+    if (localType === "video") {
+      preview.append(makeVideo(localUrl, fail)); // native controls: play, pause, volume, seek
+    } else {
+      const img = document.createElement("img");
+      img.alt = "Preview of your surprise";
+      img.addEventListener("error", fail);
+      img.src = localUrl;
+      preview.append(img);
+    }
+    preview.classList.remove("hidden");
+  }
+
   fileInput.addEventListener("change", e => {
     const f = e.target.files && e.target.files[0];
     if (!f) return;
-    const isImg = f.type.startsWith("image/");
-    const isVid = f.type.startsWith("video/");
+    // some devices report an empty type for videos, so the file extension counts too
+    const isVid = f.type.startsWith("video/") || VIDEO_EXT.test(f.name);
+    const isImg = !isVid && (f.type.startsWith("image/") || IMAGE_EXT.test(f.name));
     if (!isImg && !isVid) {
-      fileMsg.textContent = "Please choose an image or a video file.";
+      fileMsg.textContent = "Please choose an image (JPG, PNG, WebP, GIF) or a video (MP4, WebM).";
       e.target.value = "";
       return;
     }
@@ -1735,8 +1844,19 @@ $("#homeBtn").addEventListener("click", () => navigate("home"));
     localUrl = URL.createObjectURL(f);
     localType = isVid ? "video" : "image";
     clearBtn.disabled = false;
-    fileMsg.textContent = `Previewing “${f.name}” on this device only. Nothing was uploaded.` +
+
+    let hint = "";
+    if (isVid) {
+      const ext = (f.name.split(".").pop() || "").toLowerCase();
+      const mime = f.type || { mp4: "video/mp4", m4v: "video/mp4", webm: "video/webm", ogv: "video/ogg", ogg: "video/ogg", mov: "video/quicktime", mkv: "video/x-matroska" }[ext] || "";
+      const probe = document.createElement("video");
+      if (mime && probe.canPlayType && probe.canPlayType(mime) === "") {
+        hint = ` This browser may not play .${ext} files. MP4 (H.264) or WebM is safest.`;
+      }
+    }
+    fileMsg.textContent = `Previewing “${f.name}” on this device only. Nothing was uploaded.` + hint +
       (opened ? "" : " Tap the gift box to see it inside the surprise.");
+    showPreview();
     if (opened) renderMedia();
   });
 
@@ -1747,6 +1867,7 @@ $("#homeBtn").addEventListener("click", () => navigate("home"));
     fileInput.value = "";
     clearBtn.disabled = true;
     fileMsg.textContent = DEFAULT_MSG;
+    showPreview();
     if (opened) renderMedia();
   });
 })();
