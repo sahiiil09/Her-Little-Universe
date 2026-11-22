@@ -1132,3 +1132,40 @@ body.no-anim .gift-hint { animation: none; }
   .lb-prev { left: 6px; } .lb-next { right: 6px; }
   .set-card { padding: 16px 14px 18px; }
 }
+
+
+/* =========================================================
+   UPDATE 4: EMOJI EVERYWHERE, LONG PHOTO CAPTIONS, VIDEO PREVIEW
+   (appended; everything above is unchanged)
+   ========================================================= */
+
+/* colour-emoji fonts at the end of every font stack, so emoji never fall back to plain symbols */
+:root {
+  --hand: 'Gochi Hand', 'Comic Sans MS', "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Twemoji Mozilla", cursive;
+  --body: 'Patrick Hand', 'Trebuchet MS', "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Twemoji Mozilla", sans-serif;
+  --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Twemoji Mozilla", serif;
+}
+
+/* long text and emoji wrap instead of overflowing, on every screen size */
+.sticky p, .letter p, #letterBody p, .letter-to, .ow-text p, .ow-card-title, .sr-text p, .sr-title,
+.polaroid figcaption, .lb-fig figcaption, .v-title, .song-name, .sec-sub, .count-msg, .gate-sub,
+.toast span, .dlg-err, .empty, textarea, input[type="text"] { overflow-wrap: anywhere; word-break: normal; }
+#letterBody p, .ow-text p, .sr-text p, .v-title, .lb-fig figcaption { white-space: pre-wrap; }
+
+/* photo captions: long ones are shortened on the card, and shown in full in the viewer */
+.polaroid figcaption {
+  white-space: pre-line; display: -webkit-box; -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden;
+}
+#lbCap { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 28vh; overflow: auto; }
+
+/* caption box in the admin upload form + counters */
+.section.admin .paper-card textarea { background: rgba(255, 255, 255, .75); border: 1.5px solid rgba(255, 143, 171, .5); min-height: 70px; max-height: 35vh; margin-top: 6px; line-height: 1.4; }
+body[data-theme="midnight"] .section.admin .paper-card textarea { background: rgba(255, 255, 255, .08); border-color: rgba(190, 170, 255, .4); color: var(--ink); }
+.cap-count, .edit-count { display: block; margin: 2px 0 0; text-align: right; font-size: .95rem; }
+.edit-count { margin-bottom: 4px; }
+
+/* surprise: preview of the chosen image / video */
+.sp-preview { margin: 14px 0 6px; }
+.sp-preview img, .sp-preview video { display: block; max-width: 100%; max-height: 260px; margin: 0 auto; border-radius: 14px; background: #000; box-shadow: 0 8px 20px rgba(90, 62, 75, .25); }
+.sp-preview img { background: transparent; }
