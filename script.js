@@ -137,7 +137,7 @@ LETTER: [
      video example:  "https://drive.google.com/file/d/1BURFNeK9UigH2ngiRgb50IXx4nnHsTds/view?usp=drivesdk"
    Leave it as "" and the surprise still works (message + confetti).
    (Nothing is uploaded anywhere by the website.) */
-const SURPRISE_MEDIA_URL = "";
+const SURPRISE_MEDIA_URL = "https://drive.google.com/file/d/1BURFNeK9UigH2ngiRgb50IXx4nnHsTds/view?usp=drivesdk";
 const SURPRISE_MEDIA_TYPE = "auto";   // "auto" | "image" | "video"  (auto guesses from the link)
 const SURPRISE_TITLE = "Happy Birthday, {name}!";
 const SURPRISE_MESSAGE = [
