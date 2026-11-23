@@ -939,7 +939,7 @@ async function loadNotes() {
   renderNotes(notesCache);
 }
 
-const NOTE_MAX = 20000; // characters per note (matches maxlength in index.html)
+const NOTE_MAX = 2000; // characters per note
 
 /* friendly text when the database refuses a note (e.g. its own, older length limit) */
 function noteErrorText(error) {
