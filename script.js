@@ -156,9 +156,9 @@ const OPEN_WHEN_LETTERS = [
     kicker: "Open when",
     title: "you're happy",
     message: [
-      "Tumhe khush dekhna meri favourite cheez hai, {name}. Aaj jo bhi wajah hai is khushi ki, mujhe usse pyaar ho gaya hai.",
-      "Is pal ko poori tarah jee lo. Hans lo, naach lo, photos kheench lo. Aur mujhe zaroor batana, kyunki tumhari khushi mere liye bhi celebration hai.",
-      "Bas itna yaad rakhna: tum jab muskurati ho, to meri duniya bhi halki aur roshan ho jaati hai."
+      "Pata hai, tumhari khushi mere liye kitni special hai? Shayad main har baar express nahi kar pata, lekin tumhe khush dekhkar mere dil ko ek alag hi sukoon milta hai. ❤️",
+      "Aaj agar tumhare chehre par smile hai, toh please use jaane mat dena. Khulkar hasna, apne favourite moments enjoy karna aur chhoti-chhoti khushiyon ko bhi celebrate karna.",
+      "Aur haan, kabhi apni khushi ki wajah bhool jaana toh bas itna yaad rakhna ki tum khud bhi kisi ki zindagi ki bahut khoobsurat wajah ho. 🥹💕"
     ]
   },
   {
@@ -166,9 +166,9 @@ const OPEN_WHEN_LETTERS = [
     kicker: "Open when",
     title: "you're sad",
     message: [
-      "Aaj ka din bhaari hai na? Main wahan nahi hu to bhi, dil se tumhare bagal mein hi baitha hu.",
-      "Ek gehri saans lo. Thoda paani piyo. Rona ho to ro lo, kyunki rona kamzori nahi hota. Ye din bhi guzar jayega, hamesha guzarta hai.",
-      "Main har cheez theek nahi kar sakta, par tumhari baat sun sakta hu, jitni der tak tum chaho. Jab bhi mann kare, mujhe bata dena. Bina kisi wajah ke bhi."
+      "Agar aaj tumhara mann udaas hai, toh khud ko zabardasti theek dikhane ki zaroorat nahi hai. Har din achha ho, ye zaroori nahi. Kabhi-kabhi bina kisi wajah ke bhi dil bhaari ho jaata hai. ❤️",
+      "Bas ek baat yaad rakhna, tumhe har cheez akele handle karne ki zaroorat nahi hai. Apni feelings ko samajhne ke liye khud ko thoda waqt dena. Tumhari har feeling important hai.",
+      "Kaash main tumhare paas hota aur bina kuch kahe tumhari baatein sun pata. Main har problem solve nahi kar sakta, lekin tumhari baat sunne aur tumhe samajhne ki hamesha koshish karunga. 🫂"
     ]
   },
   {
@@ -176,9 +176,9 @@ const OPEN_WHEN_LETTERS = [
     kicker: "Open when",
     title: "you miss me",
     message: [
-      "Agar tum mujhe miss kar rahi ho, to jaan lo ki main bhi tumhe miss kar raha hu, shayad tumse zyada.",
-      "Door hone se kuch kam nahi hota, bas intezaar thoda lamba ho jaata hai. Voice notes dobara sun lo, photos dekh lo, aur hamare purane pal yaad kar lo.",
-      "Aur jab hum milenge, ye saara intezaar bhool jayenge. Tab tak, mera ek bada sa hug tumhare liye."
+      "Agar kabhi meri yaad aaye, toh ye mat sochna ki tum hi mujhe miss kar rahi ho. Kuch log door rehkar bhi dil ke bahut kareeb hote hain, aur tum unmein se ho. ❤️",
+      "Kabhi hamari baatein yaad kar lena, woh chhoti-chhoti silly moments, woh hasi aur woh conversations jo bina kisi reason ke bhi special ban jaati hain.",
+      "Faasle chahe jitne bhi hon, meri life mein tumhari jagah alag rahegi. Aur haan, jab bhi milenge, bahut saari baatein pending hain. 🥹💗"
     ]
   },
   {
@@ -186,9 +186,9 @@ const OPEN_WHEN_LETTERS = [
     kicker: "Open",
     title: "before you sleep",
     message: [
-      "Aaj ka din chahe jaisa bhi gaya ho, ab usse yahin chhod do. Phone side mein rakho aur ek lambi saans lo.",
-      "Tumne aaj bahut kuch sambhala hoga, bina kisi ko bataye. Ab aaram ka waqt hai. Tum kaafi ho, jaisi ho waisi hi.",
-      "Good night, {name}. Meethe sapne dekhna, aur subah ek nayi muskurahat ke saath uthna."
+      "Ab din bhar ki saari tension ko thoda side mein rakh do. Jo ho gaya, use badla nahi ja sakta, aur jo aane wala hai uski fikr mein aaj ki neend kharab mat karna. 🌙",
+      "I hope tumhara kal aaj se zyada achha ho. Tumhari life mein aise moments aayein jahan tum bina kisi tension ke dil se muskura sako.",
+      "Apna khayal rakhna, time par sona aur kabhi khud ko sabse aakhir mein mat rakhna. You deserve peace, happiness and all the beautiful things life has to offer. Good night, take care. ❤️✨"
     ]
   },
   {
@@ -196,9 +196,9 @@ const OPEN_WHEN_LETTERS = [
     kicker: "Open when",
     title: "you doubt yourself",
     message: [
-      "Jab bhi tumhe khud par shak ho, ek baat yaad rakhna: tum utni hi kaabil ho jitna tum sochti ho, aur usse kahin zyada.",
-      "Galtiyan sabse hoti hain, aur har galti ke baad tum pehle se zyada strong banti ho. Mujhe tumhari perfection nahi chahiye, mujhe tum chahiye.",
-      "Main tumhare saath hu, har faisle mein, har darr mein, har naye kadam mein."
+      "Kabhi-kabhi shayad tumhe lage ki tum kuch achha nahi kar paa rahi ho, ya tumhare andar woh baat nahi hai. Lekin please, apni value ko kisi ek bure din ya kisi ek failure se decide mat karna. ❤️",
+      "Tumhari apni ek khoobsurati hai, tumhari apni strengths hain aur tumhare apne dreams hain. Har kisi ka safar alag hota hai. Tumhe kisi aur jaisa banne ki zaroorat nahi hai.",
+      "I hope tum hamesha khud par bharosa rakho, apne dreams ke liye aage badho aur kabhi ye na bhoolo ki tum jitna khud ko samajhti ho, usse kahin zyada capable ho. I believe in you. 🥹💗"
     ]
   },
   {
@@ -206,9 +206,11 @@ const OPEN_WHEN_LETTERS = [
     kicker: "Open",
     title: "on your birthday",
     message: [
-      "Happy Birthday, {name}! Aaj ka din sirf tumhara hai.",
-      "Dil se dua hai ki ye saal tumhe wo sab de jo tumne chaha hai, aur wo bhi jo tumne kabhi maanga nahi. Khoob khushiyan, khoob sukoon, aur khoob saari hansi.",
-      "Mujhe tumse milna meri life ki sabse achhi baaton mein se ek lagta hai. Ek wish maango, aur use dil mein rakhna."
+      "Happiest Birthday, {name}! ❤️🎂 Aaj ka din mere liye bhi special hai, kyunki aaj us insaan ka birthday hai jiski khushi mere dil ke bahut kareeb hai.",
+      "Dil se dua hai ki tumhari zindagi ka aane wala har saal pichhle saal se zyada khoobsurat ho. Tumhare saare dreams poore hon, tumhe woh success mile jiske liye tum mehnat kar rahi ho aur tumhari life khushiyon aur sukoon se bhari rahe. ✨",
+      "Main chahta hoon ki tum zindagi mein bahut aage jao, apni har khwahish poori karo aur hamesha apne chehre par woh pyaari si smile rakho. Kabhi khud ko kam mat samajhna aur kabhi apni khushi ko ignore mat karna.",
+      "Thank you for being you. Tumhari presence, tumhari baatein aur tumhara hona mere liye bahut मायने rakhta hai. I hope this birthday gives you countless beautiful memories. 🥹❤️",
+      "Once again, Happy Birthday! May Allah bless you with endless happiness, good health, success and everything your heart wishes for. Ameen. 🤲🏻💗"
     ]
   }
 ];
