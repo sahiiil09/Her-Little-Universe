@@ -134,7 +134,7 @@ LETTER: [
    PERMANENT MEDIA: paste a public, DIRECT link to an image or a video
    between the quotes on the next line, then save the file.
      image example:  "https://example.com/our-photo.jpg"
-     video example:  "https://example.com/our-message.mp4"
+     video example:  "https://drive.google.com/file/d/1BURFNeK9UigH2ngiRgb50IXx4nnHsTds/view?usp=drivesdk"
    Leave it as "" and the surprise still works (message + confetti).
    (Nothing is uploaded anywhere by the website.) */
 const SURPRISE_MEDIA_URL = "";
