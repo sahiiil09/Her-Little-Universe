@@ -141,9 +141,11 @@ const SURPRISE_MEDIA_URL = "https://drive.google.com/file/d/1BURFNeK9UigH2ngiRgb
 const SURPRISE_MEDIA_TYPE = "auto";   // "auto" | "image" | "video"  (auto guesses from the link)
 const SURPRISE_TITLE = "Happy Birthday, {name}!";
 const SURPRISE_MESSAGE = [
-  "Aaj ka din poori tarah tumhara hai. Ye chhota sa gift box maine sirf tumhare liye sajaya hai.",
-  "Tum meri life ki sabse khoobsurat surprise ho, Suhu. Hamesha hasti raho, hamesha aise hi chamakti raho.",
-  "Happy Birthday, my love."
+  "Aaj ka din sirf tumhara hai, Suhu. 🥹❤️ Ye chhota sa surprise maine bahut pyaar se sirf tumhare liye banaya hai. Shayad ye tumhe woh sab express na kar paaye jo main tumhare liye feel karta hoon, lekin iske peeche meri bahut saari feelings chhupi hain.",
+  "Tumhari ye khoobsurat pictures, tumhari smiles aur tumhare chhote-chhote moments... in sabko ek saath dekhna apne aap mein bahut special hai. I hope ye little video tumhare chehre par ek pyaari si smile le aaye. ✨❤️",
+  "Tum meri zindagi ka woh khoobsurat hissa ho jiske hone se ordinary si cheezein bhi special lagne lagti hain. Meri dil se dua hai ki tumhari life hamesha khushiyon se bhari rahe, tumhare saare dreams poore hon aur tumhe woh sab mile jiski tum khwahish rakhti ho. 🥺💗",
+  "I wish I could give you more than just words and little surprises. Bas hamesha yaad rakhna, you are loved, appreciated and truly special. Apna khayal rakhna aur hamesha aise hi muskurati rehna.",
+  "Happy Birthday, Suhu! May Allah bless you with endless happiness, beautiful memories, success and a lifetime of peace. You deserve all the beautiful things in this world. I love you. ❤️🎂🫶🏻"
 ];
 
 /* ---------- OPEN WHEN LETTERS ----------
